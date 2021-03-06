@@ -69,7 +69,7 @@ function loadPage()
 	
 	// Send the request for the page
 	var httpRequest = new XMLHttpRequest();
-	httpRequest.open('GET', "https://cors-anywhere.herokuapp.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId, true);
+	httpRequest.open('GET', "https://murmuring-forest-35635.herokuapp.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId, true);
 	httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 	httpRequest.onreadystatechange = function () {
 		if (this.readyState == 4)
@@ -199,7 +199,7 @@ function sendNext(offset, desiredTags)
 			loadContent(doc, desiredTags);
 		}
 	}
-	httpRequest.open('GET', "https://cors-anywhere.herokuapp.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId + "&pid=" + (1 * offset), true);
+	httpRequest.open('GET', "https://murmuring-forest-35635.herokuapp.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId + "&pid=" + (1 * offset), true);
 	httpRequest.send();
 }
 
@@ -365,7 +365,7 @@ function swapAllLinks(i)
 	var a = as[0];
 	var id = new URLSearchParams(a.search).get("id");
 	
-	fetch("https://cors-anywhere.herokuapp.com/https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=id:" + id, {mode : "cors"})
+	fetch("https://murmuring-forest-35635.herokuapp.com/https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=id:" + id, {mode : "cors"})
 	.then(resp => resp.json())
 	.then(xs =>
 	{

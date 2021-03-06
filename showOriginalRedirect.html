@@ -4,7 +4,7 @@
 	var id = urlParams.get('id');
 	
 	// Send the request to fetch the image metadata
-	fetch("https://cors-anywhere.herokuapp.com/https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=id:" + id, {mode : "cors"})
+	fetch("https://murmuring-forest-35635.herokuapp.com/https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=id:" + id, {mode : "cors"})
 	.then(resp => resp.json())
 	.then(xs =>
 	{
