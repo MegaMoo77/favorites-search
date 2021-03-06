@@ -4,12 +4,14 @@
   <script src="awesomplete.min.js" type="text/javascript"></script>
 </head>
 <body id="body">
-	<input type="text" id="userId" placeholder="User Id" value="135014"> <!-- Save your id here -->
-	<input id="tags"  name="tags" size="30" type="text" value="" autocomplete="off" aria-autocomplete="list">
-	<button type="button" id="go" onclick="loadPage()">Search</button>
+	<form autocomplete="on" action="javascript:void(0);">
+		<input type="text" id="userId" placeholder="User Id" autocomplete="on">
+		<input id="tags"  name="tags" size="30" type="text" value="" autocomplete="off" aria-autocomplete="list">
+		<input type="submit" onclick="loadPage()" />
+	</form>
 	<button type="button" id="stop" onclick="stopItAll()" style="display: none">Stop</button>
 	<a id="random" href="javascript:void(0)" onmousedown="changeRandom()" style="display: none" target="_blank">Random</a>
-	<a href="#" onclick="showAdvancedOptions(this);">+</a>
+	<!-- <a href="#" onclick="showAdvancedOptions(this);">+</a> -->
 	<br>
 	<label id="showMore" style="display: none;">
 	  <div title="Higher number = faster search; more computer resources">Max threads:
@@ -25,19 +27,8 @@
 var finishedCount = 0;
 var maximumConcurrentThreads = 40;
 
-
-// Show the advanced options
-function showAdvancedOptions(obj) {
-    var content = document.getElementById("showMore");
-
-    if (content.style.display == "none") {
-        content.style.display = "";
-        obj.innerHTML = "-";
-    } else {
-        content.style.display = "none";
-        obj.innerHTML = "+";
-    }
-}
+// Try to load the previous value from the saved cookie
+document.getElementById("userId").value = getCookie("userId");
 
 // Loads the page
 function loadPage()
@@ -51,6 +42,9 @@ function loadPage()
 
 	// Get the user id
 	var userId = document.getElementById("userId").value;
+	
+	// Add it as a cookie
+	document.cookie = "userId=" + userId;
 	
 	// Clear the div
 	var contentDiv = document.getElementById("content");
@@ -125,7 +119,6 @@ async function loopUntilDone(count, desiredTags, userId, offset)
 	if (end < maximumConcurrentThreads)
 	{
 		document.getElementById("spinner").style.display = "none";
-		//swapAllLinks(0);
 		return;
 	}
 	
@@ -353,43 +346,19 @@ function deleteShowHide(testDiv)
 	}
 }
 
-function swapAllLinks(i)
-{
-	var thumbs = document.getElementsByClassName("thumb");
-	
-	if (i >= thumbs.length)
-		return;
-	
-	// Get its id
-	var as = thumbs[i].getElementsByTagName("a");
-	var a = as[0];
-	var id = new URLSearchParams(a.search).get("id");
-	
-	fetch("https://murmuring-forest-35635.herokuapp.com/https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=id:" + id, {mode : "cors"})
-	.then(resp => resp.json())
-	.then(xs =>
-	{
-		// Extract the folder and image name to build the link
-		let x = xs[0];
-		var href = "https://img.rule34.xxx/images/" + x.directory + "/" + x.image;
-		as[1].href = href;
-		swapAllLinks(i + 1);
-	});
-}
-
-function swapLink(xs, link)
-{
-	// Extract the folder and image name to build the link
-	let x = xs[0];
-	var href = "https://img.rule34.xxx/images/" + x.directory + "/" + x.image;
-	link.href = href;
-}
-
 // Stops all requests
 function stopItAll()
 {
 	window.stop();
 	document.getElementById("spinner").style.display = "none";
+}
+
+// Gets the value of a specific cookie
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return "";
 }
 
 </script>
