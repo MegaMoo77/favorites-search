@@ -3,6 +3,11 @@
 	const urlParams = new URLSearchParams(window.location.search);
 	var id = urlParams.get('id');
 	
+	if (id == "")
+	{
+		return;
+	}
+	
 	// Send the request to fetch the image metadata
 	fetch("https://murmuring-forest-35635.herokuapp.com/https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=id:" + id, {mode : "cors"})
 	.then(resp => resp.json())
