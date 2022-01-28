@@ -5,15 +5,36 @@
 	
 	if (id != "")
 	{
-		// Send the request to fetch the image metadata
-		fetch("https://murmuring-forest-35635.herokuapp.com/https://rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=id:" + id, {mode : "cors"})
-		.then(resp => resp.json())
-		.then(xs =>
-		{
-			// Extract the folder and image name to build the link
-			let x = xs[0];
-			window.location.href = "https://us.rule34.xxx/images/" + x.directory + "/" + x.image;
-		});
+		var httpRequest = new XMLHttpRequest();
+		httpRequest.open('POST', "https://murmuring-forest-35635.herokuapp.com/https://rule34.xxx/index.php?page=post&s=view&id=" + id, true);
+		httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		httpRequest.onreadystatechange = function () {
+			if (this.readyState == 4)
+			{
+				// Get the response text
+				var responseText = httpRequest.responseText;
+				
+				var parser = new DOMParser();
+				var element = parser.parseFromString(responseText, 'text/html');
+				//element.innerHTML = responseText;
+				var linkList = element.getElementsByClassName("link-list")[0];
+				var ul = linkList.getElementsByTagName("UL")[0];
+				var lis = ul.getElementsByTagName("LI");
+				var li = null;
+				for (i = 0; i < lis.length; i++)
+				{
+					if (lis[i].innerHTML.includes("Original"))
+					{
+						li = lis[i];
+						break;
+					}
+				}
+				var a = li.getElementsByTagName("a")[0];
+				var href = a.href;
+				window.location.href = href;
+			}
+		}
+		httpRequest.send();
 	}
 
 </script>
