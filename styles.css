@@ -23,7 +23,7 @@ org {
     background: #e7e7e7;
     font-size: 15px;
     font-weight: bold;
-    display: inline-block;
+    display: block;
     line-height: 0px;
     padding: 11px 3px;   
 }
