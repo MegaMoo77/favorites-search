@@ -178,9 +178,24 @@ function sendNext(offset, desiredTags)
 	var userId = document.getElementById("userId").value;
 
 	// Set up the request
+	var attempt = 0;
 	var httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function()
 	{
+		if (httpRequest.status == 503)
+		{
+			attempt++;
+			if (attempt < 3)
+			{
+				return;
+			}
+
+			// Sleep and try again
+			sleepAndRetry(offset, desiredTags);
+			return;
+		}
+		
+		
 		// Modify the div once we have the page content
 		if (this.readyState == 4)
 		{
@@ -346,6 +361,12 @@ function deleteShowHide(testDiv)
 			return;
 		}
 	}
+}
+
+async function sleepAndRetry(offset, desiredTags)
+{
+	await sleep(100);
+	sendNext(offset, desiredTags);
 }
 
 // Stops all requests
