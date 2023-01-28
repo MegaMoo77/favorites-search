@@ -24,8 +24,6 @@
       <div id="content"></div>
       <br>
       <img id="spinner" src="spinner.gif" alt="Spinner" style="display: none;">
-  
-  
   <script>
   
   var finishedCount = 0;
@@ -64,12 +62,12 @@
        
       // Written by UndertowTruck
       // get command interpretation and display it to user
-      var interpretation =document.getElementById("interpretation")
-      console.log(get_command_interpretation(commands))
+      var interpretation = document.getElementById("interpretation")
+	  var intepretation = get_command_interpretation(commands)
+      console.log(intepretation)
       interpretation.innerText = get_command_interpretation(commands)
       
       var enteredMaxThreads = parseInt(document.getElementById("maxThreads").value);
-
       if (!isNaN(enteredMaxThreads))
           maximumConcurrentThreads = enteredMaxThreads;
       
@@ -255,41 +253,41 @@
   }
   
   // Written by UndertowTruck
-/**
- * Finds all indices where one string occurs in another
- * @param {String} original The string you want to look inside
- * @param {String} match_str The string that you're looking for in the original string
- * @returns {Array.<string>} A list of indices where the string occurs
- */
-function find_locations(original, match_str) {
-    var output = [];
-    for (let i = 0; i < original.length + 1 - match_str.length; i++) {
-        if (original.substring(i, i+match_str.length) == match_str) {
-            output.push(i);
-        }
-    }
-    return output;
-}
+  /**
+  * Finds all indices where one string occurs in another
+  * @param {String} original The string you want to look inside
+  * @param {String} match_str The string that you're looking for in the original string
+  * @returns {Array.<string>} A list of indices where the string occurs
+  */
+  function find_locations(original, match_str) {
+	var output = [];
+	for (let i = 0; i < original.length + 1 - match_str.length; i++) {
+		if (original.substring(i, i+match_str.length) == match_str) {
+			output.push(i);
+		}
+	}
+	return output;
+  }
 
-// Written by UndertowTruck
-/**
- * Preprocesses input before extracting tag search commands from input
- * @param {String} input Tag command string that user inputted
- * @returns {String} Modified string
- */
-function preprocess_input(input) {
+  // Written by UndertowTruck
+  /**
+   * Preprocesses input before extracting tag search commands from input
+   * @param {String} input Tag command string that user inputted
+   * @returns {String} Modified string
+   */
+  function preprocess_input(input) {
     // make sure input ends with single space (helps find or clauses )
     return input.toLowerCase().trim() + " ";
-}
+  }
 
-// Code adapted for JavaScript from https://www.tutorialspoint.com/wildcard-matching-in-python
-/**
- * Determines if a string matches a wildcard pattern where '*' is a wildcard
- * @param {String} s Input string
- * @param {String} p Wildcard pattern to match against
- * @return {Boolean} Whether the string matches wildcard or not
- */
-function match(s, p) {
+  // Code adapted for JavaScript from https://www.tutorialspoint.com/wildcard-matching-in-python
+  /**
+   * Determines if a string matches a wildcard pattern where '*' is a wildcard
+   * @param {String} s Input string
+   * @param {String} p Wildcard pattern to match against
+   * @return {Boolean} Whether the string matches wildcard or not
+   */
+  function match(s, p) {
     var sl = s.length;
     var pl = p.length;
     var dp = [];
@@ -318,29 +316,29 @@ function match(s, p) {
         }
     }
     return dp[sl][pl];
-}
+  }
 
-// Written by UndertowTruck
-/**
- * Makes sure tag isn't empty or consists only of whitespace
- * @param {String} tag 
- * @returns {Boolean}
- */
-function is_not_empty(tag) {
+  // Written by UndertowTruck
+  /**
+   * Makes sure tag isn't empty or consists only of whitespace
+   * @param {String} tag 
+   * @returns {Boolean}
+   */
+  function is_not_empty(tag) {
     let removed_space = tag.trim();
     if (removed_space.length == 0) {
         return false;
     }
     return true;
-}
+  }
 
-// Written by UndertowTruck
-/**
- * Any expression contained between '( ' and ' )' including the parantheses is considered an OR clause
- * @param {String} input Tag command string that user inputted after modification by preprocess input
- * @returns {Array} An array containing an array of or clause commands and the remaining string after OR clauses extracted
- */
-function get_or_clauses(input) {
+  // Written by UndertowTruck
+  /**
+   * Any expression contained between '( ' and ' )' including the parantheses is considered an OR clause
+   * @param {String} input Tag command string that user inputted after modification by preprocess input
+   * @returns {Array} An array containing an array of or clause commands and the remaining string after OR clauses extracted
+   */
+  function get_or_clauses(input) {
     var lowercase = input.toLowerCase();
     // array of or commands
     var commands = [];
@@ -368,14 +366,14 @@ function get_or_clauses(input) {
         }
     }
     return [commands, lowercase];
-}
+  }
 
-/**
- * Gets list of tags in or clause
- * @param {String} or_clause String expression that starts with an '(' and ends with an ')' with tags separated by ' ~ '
- * @returns {Array} An array of tags found in or clause
- */
-function get_or_tags(or_clause) {
+  /**
+   * Gets list of tags in or clause
+   * @param {String} or_clause String expression that starts with an '(' and ends with an ')' with tags separated by ' ~ '
+   * @returns {Array} An array of tags found in or clause
+   */
+  function get_or_tags(or_clause) {
     // get rid of surrounding parantheses
     let mod_or_clause = or_clause.slice(1,-1);
     var or_tags;
@@ -392,16 +390,16 @@ function get_or_tags(or_clause) {
     // don't return empty tags
     or_tags = or_tags.filter(is_not_empty);
     return or_tags;
-}
+  }
 
-// Written by UndertowTruck
-/**
- * After extracting or clauses, find remaining tag commands
- * Each tag command has space between others
- * @param {String} input String to extract tag commands from (must have or clauses extracted beforehand)
- * @returns {Array<String>} List of tag commands. A tag command has a command type and details. Example: ["EXCLUDE", "dog"]
- */
-function get_remaining_tags(input) {
+  // Written by UndertowTruck
+  /**
+   * After extracting or clauses, find remaining tag commands
+   * Each tag command has space between others
+   * @param {String} input String to extract tag commands from (must have or clauses extracted beforehand)
+   * @returns {Array<String>} List of tag commands. A tag command has a command type and details. Example: ["EXCLUDE", "dog"]
+   */
+  function get_remaining_tags(input) {
     var tags = input.split(" ");
     var commands = [];
 
@@ -433,16 +431,16 @@ function get_remaining_tags(input) {
     }
 
     return commands;
-}
+  }
 
-// Written by UndertowTruck
-/**
- * Creates list of tag commands to help filter images
- * Command list used by functions isMatch and get_command_interpretation
- * @param {String} input 
- * @returns {Array}
- */
-function get_commands(input) {
+  // Written by UndertowTruck
+  /**
+   * Creates list of tag commands to help filter images
+   * Command list used by functions isMatch and get_command_interpretation
+   * @param {String} input 
+   * @returns {Array}
+   */
+  function get_commands(input) {
     var mod_input = preprocess_input(input);
     // get OR commands and remaining string after or clauses extracted
     var [or_commands, remaining_str] = get_or_clauses(mod_input);
@@ -450,15 +448,15 @@ function get_commands(input) {
     var remaining_commands = get_remaining_tags(remaining_str);
     // combines commands. Remaining commands go first since they are easiest to process
     return remaining_commands.concat(or_commands);
-}
+  }
 
-// Written by UndertowTruck
-/**
- * Creates a string representing instructions that will be run for user convenience
- * @param {Array} commands List of commands to translate into English words
- * @returns {String} A human readable string of the commands used to filter out images
- */
-function get_command_interpretation(commands) {
+  // Written by UndertowTruck
+  /**
+   * Creates a string representing instructions that will be run for user convenience
+   * @param {Array} commands List of commands to translate into English words
+   * @returns {String} A human readable string of the commands used to filter out images
+   */
+  function get_command_interpretation(commands) {
     var output = "";
     for (let command of commands) {
         var addition = "[ ";
@@ -501,16 +499,16 @@ function get_command_interpretation(commands) {
         output += addition;
     }
     return output;
-}
+  }
 
-// Written by UndertowTruck
-/**
- * Uses image tags and list of commands to determine if image should be included according to commands
- * @param {Array} image_tags Array of strings representing tags of image
- * @param {Array} commands Array of commands specifying what images should/shouldn't be included
- * @returns {Boolean} Whether image should be included according to commands
- */
-function isMatch(image_tags, commands) {
+  // Written by UndertowTruck
+  /**
+   * Uses image tags and list of commands to determine if image should be included according to commands
+   * @param {Array} image_tags Array of strings representing tags of image
+   * @param {Array} commands Array of commands specifying what images should/shouldn't be included
+   * @returns {Boolean} Whether image should be included according to commands
+   */
+  function isMatch(image_tags, commands) {
     for (let command of commands) {
         // if command is TAG, make sure that tag exists in image
         if (command[0] == "TAG") {
@@ -575,7 +573,7 @@ function isMatch(image_tags, commands) {
         }
     }
     return true;
-}
+  }
   
   // Adds the "original image" link
   function addShowOriginal(thumb, img, as)
@@ -619,7 +617,7 @@ function isMatch(image_tags, commands) {
       }
   }
   
-  // Changes the image linked by the Rnadom button
+  // Changes the image linked by the Random button
   function changeRandom()
   {
       // Get the thumbs

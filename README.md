@@ -47,13 +47,13 @@ This input requests that an image contain dog, but doesn't contain any of the ta
 The OR command is a very complex command. It consists of a pair of parantheses with commands inside, all separated by the \~ symbol.
 There must be spaces between the \~ and the commands, and also there must be space between the commands and the parantheses.
 
-INVALID: (dog\~cat)
+INVALID: (dog~cat)
 
-INVALID: ( dog\~cat )
+INVALID: ( dog~cat )
 
-INVALID: ( dog\~ cat )
+INVALID: ( dog~ cat )
 
-VALID: ( dog \~ cat )
+VALID: ( dog ~ cat )
 
 Additionally, if you want to use more than one or command, make sure they are separated by spaces.
 
