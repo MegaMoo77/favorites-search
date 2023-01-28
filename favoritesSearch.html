@@ -9,6 +9,7 @@
           <input type="text" id="userId" placeholder="User Id" autocomplete="on">
           <div class="awesomplete"><input id="tags" name="tags" size="30" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
           <input type="submit" onclick="loadPage()">
+		  <a href="README.md">About</a>
       </form>
       <button type="button" id="stop" onclick="stopItAll()" style="display: none">Stop</button>
       <p id="interpretation"> Command interpretation will display here </p>
@@ -32,6 +33,226 @@
   
   // Try to load the previous value from the saved cookie
   document.getElementById("userId").value = getCookie("userId");
+ 
+  // Loads the page
+  function loadPage()
+  {
+      // Stop anything that is loading
+      stopItAll();	
+  
+      // Show the spinner
+      var spinner = document.getElementById("spinner");
+      spinner.style.display = "block";
+  
+      // Get the user id
+      var userId = document.getElementById("userId").value;
+      
+      // Add it as a cookie
+      document.cookie = "userId=" + userId;
+      
+      // Clear the div
+      var contentDiv = document.getElementById("content");
+      contentDiv.innerHTML = "";
+      
+      // Show the stop button
+      var stopButton = document.getElementById("stop");
+      stopButton.style.display = "inline";
+      
+      // Written by UndertowTruck
+      // Get tag commands
+      var commands = get_commands(document.getElementById("tags").value)
+       
+      // Written by UndertowTruck
+      // get command interpretation and display it to user
+      var interpretation =document.getElementById("interpretation")
+      console.log(get_command_interpretation(commands))
+      interpretation.innerText = get_command_interpretation(commands)
+      
+      var enteredMaxThreads = parseInt(document.getElementById("maxThreads").value);
+
+      if (!isNaN(enteredMaxThreads))
+          maximumConcurrentThreads = enteredMaxThreads;
+      
+      // Send the request for the page
+      var httpRequest = new XMLHttpRequest();
+      httpRequest.open('GET', "https://cors-anywhere2.onrender.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId, true);
+      httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      httpRequest.onreadystatechange = function () {
+          if (this.readyState == 4)
+          {
+              // Get the response text
+              var responseText = httpRequest.responseText;
+              
+              // Parse the document
+              var parser = new DOMParser();
+              var doc = parser.parseFromString(responseText, "text/html");
+              
+              var lastAs = doc.getElementsByName("lastpage");
+              var lastA = lastAs[0];
+              var onclick = lastA.getAttribute('onclick');
+              var countStartIndex = onclick.indexOf("pid") + 4;
+              var countEndIndex = onclick.indexOf(";") - 1;
+              var countStr = onclick.substring(countStartIndex, countEndIndex);
+              var count = Number(countStr);
+              
+              loadContent(doc, commands);
+              
+              finishedCount = 1;
+  
+              loopUntilDone(count, commands, userId, 50);
+          }
+      };
+      httpRequest.send();
+  }
+  
+  // Sleeps a specified amount of time
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+  // Grabs images until there are no more
+  async function loopUntilDone(count, commands, userId, offset)
+  {
+      // Calculate how many threads to start
+      var end = Math.min(maximumConcurrentThreads, count / 50);
+      for (var i  = 0; i < end; i++)
+      {
+          sendNext(offset, commands);
+          
+          offset += (50 * 1);
+      }
+      
+      // Sleep until all threads finish
+      while (finishedCount < end) {
+          await sleep(200);
+      }
+      
+      // If there no more more images to retrieve, hide the spinner and exit
+      if (end < maximumConcurrentThreads)
+      {
+          document.getElementById("spinner").style.display = "none";
+          return;
+      }
+      
+      finishedCount = 0;
+      loopUntilDone(count - (50 * maximumConcurrentThreads), commands, userId, offset);
+  }
+  
+  // Removes all thumbs in a document not matching the tag commands and returns the matching ones
+  function getThumbs(doc, commands)
+  {
+      // Get all the thumbs in the document
+      var thumbs = doc.getElementsByClassName("thumb");
+      
+      // Check each one for a match
+      for (var i = 0; i < thumbs.length; i++)
+      {
+          // Get the thumb
+          var thumb = thumbs[i];
+          
+          // Set the href
+          var as = thumb.getElementsByTagName("a");
+          as[0].href = "https://rule34.xxx/index.php" + as[0].search;
+          as[0].onclick = "";
+          
+          // Get the tags
+          var imgs = as[0].getElementsByTagName("img");
+          var tags = imgs[0].title.split(" ");
+          
+          // Remove the thumb if it doesn't match the tag commands
+          if (!isMatch(tags, commands))
+          {
+              var span = doc.getElementById(as[0].id).parentNode;
+              span.parentNode.removeChild(span);
+              i--;
+          }
+          
+          else
+          {
+              // Ensure the link opens in a new tab
+              as[0].target = "_blank";
+          
+              // Add the link to show the original image
+              addShowOriginal(thumb, imgs[0], as);
+          }
+          
+      }
+      thumbs = doc.getElementsByClassName("thumb");
+      return thumbs;
+  }
+  
+  // Sends a request for the next batch of results
+  function sendNext(offset, commands)
+  {
+      // Get the user id
+      var userId = document.getElementById("userId").value;
+  
+      // Set up the request
+      var attempt = 0;
+      var httpRequest = new XMLHttpRequest();
+      httpRequest.onreadystatechange = function()
+      {
+          if (httpRequest.status == 503)
+          {
+              attempt++;
+              if (attempt < 3)
+              {
+                  return;
+              }
+  
+              // Sleep and try again
+              sleepAndRetry(offset, commands);
+              return;
+          }
+          
+          
+          // Modify the div once we have the page content
+          if (this.readyState == 4)
+          {
+              // Get the response text
+              var responseText = httpRequest.responseText;
+              
+              // Parse the document
+              var parser = new DOMParser();
+              var doc = parser.parseFromString(responseText, "text/html");
+              
+              loadContent(doc, commands);
+          }
+      }
+      httpRequest.open('GET', "https://cors-anywhere2.onrender.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId + "&pid=" + (1 * offset), true);
+      httpRequest.send();
+  }
+  
+  
+  // Loads the page content
+  function loadContent(doc, commands)
+  {
+      // Get the count of total thumbs before removing
+      var totalThumbsCount = doc.getElementsByClassName("thumb").length;
+  
+      if (totalThumbsCount == 0)
+          return;
+  
+      // Get the content div
+      var contentDiv = document.getElementById("content");
+  
+      // Get all the new thumbs and add them to the existing document
+      var newThumbs = getThumbs(doc, commands);	
+      var thumbs = document.getElementsByClassName("thumb");
+      for (var i = 0; i < newThumbs.length; i++)
+      {
+          var newThumb = newThumbs[i];
+          contentDiv.insertBefore(newThumb, document.getElementById("paginator"));
+          i--;
+      }
+      
+      // Show the random button
+      var randomButton = document.getElementById("random");
+      randomButton.style.display = "inline";
+      changeRandom();
+      
+      finishedCount++;
+  }
   
   // Written by UndertowTruck
 /**
@@ -355,226 +576,6 @@ function isMatch(image_tags, commands) {
     }
     return true;
 }
- 
-  // Loads the page
-  function loadPage()
-  {
-      // Stop anything that is loading
-      stopItAll();	
-  
-      // Show the spinner
-      var spinner = document.getElementById("spinner");
-      spinner.style.display = "block";
-  
-      // Get the user id
-      var userId = document.getElementById("userId").value;
-      
-      // Add it as a cookie
-      document.cookie = "userId=" + userId;
-      
-      // Clear the div
-      var contentDiv = document.getElementById("content");
-      contentDiv.innerHTML = "";
-      
-      // Show the stop button
-      var stopButton = document.getElementById("stop");
-      stopButton.style.display = "inline";
-      
-      // Written by UndertowTruck
-      // Get tag commands
-      var commands = get_commands(document.getElementById("tags").value)
-       
-      // Written by UndertowTruck
-      // get command interpretation and display it to user
-      var interpretation =document.getElementById("interpretation")
-      console.log(get_command_interpretation(commands))
-      interpretation.innerText = get_command_interpretation(commands)
-      
-      var enteredMaxThreads = parseInt(document.getElementById("maxThreads").value);
-
-      if (!isNaN(enteredMaxThreads))
-          maximumConcurrentThreads = enteredMaxThreads;
-      
-      // Send the request for the page
-      var httpRequest = new XMLHttpRequest();
-      httpRequest.open('GET', "https://cors-anywhere2.onrender.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId, true);
-      httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-      httpRequest.onreadystatechange = function () {
-          if (this.readyState == 4)
-          {
-              // Get the response text
-              var responseText = httpRequest.responseText;
-              
-              // Parse the document
-              var parser = new DOMParser();
-              var doc = parser.parseFromString(responseText, "text/html");
-              
-              var lastAs = doc.getElementsByName("lastpage");
-              var lastA = lastAs[0];
-              var onclick = lastA.getAttribute('onclick');
-              var countStartIndex = onclick.indexOf("pid") + 4;
-              var countEndIndex = onclick.indexOf(";") - 1;
-              var countStr = onclick.substring(countStartIndex, countEndIndex);
-              var count = Number(countStr);
-              
-              loadContent(doc, commands);
-              
-              finishedCount = 1;
-  
-              loopUntilDone(count, commands, userId, 50);
-          }
-      };
-      httpRequest.send();
-  }
-  
-  // Sleeps a specified amount of time
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-  
-  // Grabs images until there are no more
-  async function loopUntilDone(count, commands, userId, offset)
-  {
-      // Calculate how many threads to start
-      var end = Math.min(maximumConcurrentThreads, count / 50);
-      for (var i  = 0; i < end; i++)
-      {
-          sendNext(offset, commands);
-          
-          offset += (50 * 1);
-      }
-      
-      // Sleep until all threads finish
-      while (finishedCount < end) {
-          await sleep(200);
-      }
-      
-      // If there no more more images to retrieve, hide the spinner and exit
-      if (end < maximumConcurrentThreads)
-      {
-          document.getElementById("spinner").style.display = "none";
-          return;
-      }
-      
-      finishedCount = 0;
-      loopUntilDone(count - (50 * maximumConcurrentThreads), commands, userId, offset);
-  }
-  
-  // Removes all thumbs in a document not matching the tag commands and returns the matching ones
-  function getThumbs(doc, commands)
-  {
-      // Get all the thumbs in the document
-      var thumbs = doc.getElementsByClassName("thumb");
-      
-      // Check each one for a match
-      for (var i = 0; i < thumbs.length; i++)
-      {
-          // Get the thumb
-          var thumb = thumbs[i];
-          
-          // Set the href
-          var as = thumb.getElementsByTagName("a");
-          as[0].href = "https://rule34.xxx/index.php" + as[0].search;
-          as[0].onclick = "";
-          
-          // Get the tags
-          var imgs = as[0].getElementsByTagName("img");
-          var tags = imgs[0].title.split(" ");
-          
-          // Remove the thumb if it doesn't match the tag commands
-          if (!isMatch(tags, commands))
-          {
-              var span = doc.getElementById(as[0].id).parentNode;
-              span.parentNode.removeChild(span);
-              i--;
-          }
-          
-          else
-          {
-              // Ensure the link opens in a new tab
-              as[0].target = "_blank";
-          
-              // Add the link to show the original image
-              addShowOriginal(thumb, imgs[0], as);
-          }
-          
-      }
-      thumbs = doc.getElementsByClassName("thumb");
-      return thumbs;
-  }
-  
-  // Sends a request for the next batch of results
-  function sendNext(offset, commands)
-  {
-      // Get the user id
-      var userId = document.getElementById("userId").value;
-  
-      // Set up the request
-      var attempt = 0;
-      var httpRequest = new XMLHttpRequest();
-      httpRequest.onreadystatechange = function()
-      {
-          if (httpRequest.status == 503)
-          {
-              attempt++;
-              if (attempt < 3)
-              {
-                  return;
-              }
-  
-              // Sleep and try again
-              sleepAndRetry(offset, commands);
-              return;
-          }
-          
-          
-          // Modify the div once we have the page content
-          if (this.readyState == 4)
-          {
-              // Get the response text
-              var responseText = httpRequest.responseText;
-              
-              // Parse the document
-              var parser = new DOMParser();
-              var doc = parser.parseFromString(responseText, "text/html");
-              
-              loadContent(doc, commands);
-          }
-      }
-      httpRequest.open('GET', "https://cors-anywhere2.onrender.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId + "&pid=" + (1 * offset), true);
-      httpRequest.send();
-  }
-  
-  
-  // Loads the page content
-  function loadContent(doc, commands)
-  {
-      // Get the count of total thumbs before removing
-      var totalThumbsCount = doc.getElementsByClassName("thumb").length;
-  
-      if (totalThumbsCount == 0)
-          return;
-  
-      // Get the content div
-      var contentDiv = document.getElementById("content");
-  
-      // Get all the new thumbs and add them to the existing document
-      var newThumbs = getThumbs(doc, commands);	
-      var thumbs = document.getElementsByClassName("thumb");
-      for (var i = 0; i < newThumbs.length; i++)
-      {
-          var newThumb = newThumbs[i];
-          contentDiv.insertBefore(newThumb, document.getElementById("paginator"));
-          i--;
-      }
-      
-      // Show the random button
-      var randomButton = document.getElementById("random");
-      randomButton.style.display = "inline";
-      changeRandom();
-      
-      finishedCount++;
-  }
   
   // Adds the "original image" link
   function addShowOriginal(thumb, img, as)
