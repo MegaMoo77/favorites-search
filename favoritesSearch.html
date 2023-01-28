@@ -1,29 +1,30 @@
-<html><head>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="search" type="application/opensearchdescription+xml" title="Rule 34: Coded by Geltas & UndertowTruck" href="Rule34.xml">
-    <script src="awesomplete.min.js" type="text/javascript"></script>
-    <title>Rule34 Favorites Search</title>
-  <style>undefined</style><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true"><link rel="preconnect" href="https://fonts.gstatic.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&amp;display=swa"></head>
-  <body id="body">
-      <form autocomplete="on" action="javascript:void(0);">
-          <input type="text" id="userId" placeholder="User Id" autocomplete="on">
-          <div class="awesomplete"><input id="tags" name="tags" size="30" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
-          <input type="submit" onclick="loadPage()">
-		  <a href="README.md">About</a>
-      </form>
-      <button type="button" id="stop" onclick="stopItAll()" style="display: none">Stop</button>
-      <p id="interpretation"> Command interpretation will display here </p>
-      <a id="random" href="javascript:void(0)" onmousedown="changeRandom()" style="display: none" target="_blank">Random</a>
-      <!-- <a href="#" onclick="showAdvancedOptions(this);">+</a> -->
-      <br>
-      <label id="showMore" style="display: none;">
-        <div title="Higher number = faster search; more computer resources">Max threads:
-          <input id="maxThreads" name="comment" size="5" type="text" value="40">
-        </div>
-      </label>
-      <div id="content"></div>
-      <br>
-      <img id="spinner" src="spinner.gif" alt="Spinner" style="display: none;">
+<html>
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="search" type="application/opensearchdescription+xml" title="Rule 34 Favorites Search: Coded by megaMoo and UndertowTruck" href="Rule34.xml">
+  <script src="awesomplete.min.js" type="text/javascript"></script>
+  <title>Rule34 Favorites Search</title>
+</head>
+<body id="body">
+	<form autocomplete="on" action="javascript:void(0);">
+		<input type="text" id="userId" placeholder="User Id" autocomplete="on">
+		<input id="tags"  name="tags" size="30" type="text" value="" autocomplete="off" aria-autocomplete="list">
+		<input type="submit" onclick="loadPage()" />
+		<a href="README.md">About</a>
+	</form>
+	<button type="button" id="stop" onclick="stopItAll()" style="display: none">Stop</button>
+	<p id="interpretation"> Command interpretation will display here </p>
+	<a id="random" href="javascript:void(0)" onmousedown="changeRandom()" style="display: none" target="_blank">Random</a>
+	<!-- <a href="#" onclick="showAdvancedOptions(this);">+</a> -->
+	<br>
+	<label id="showMore" style="display: none;">
+	  <div title="Higher number = faster search; more computer resources">Max threads:
+		<input id="maxThreads" name="comment" size="5" type="text" value="40" />
+	  </div>
+	</label>
+	<div id="content"></div>
+	<br/>
+	<img id="spinner" src="spinner.gif" alt="Spinner" style="display: none;">
   <script>
   
   var finishedCount = 0;
