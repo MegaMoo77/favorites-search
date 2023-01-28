@@ -1,7 +1,7 @@
 <html>
 <head>
   <link rel="stylesheet" href="styles.css">
-  <link rel="search" type="application/opensearchdescription+xml" title="Rule 34 Favorites Search: Coded by megaMoo and UndertowTruck" href="Rule34.xml">
+  <link rel="search" type="application/opensearchdescription+xml" title="Rule 34 Favorites Search: Coded by MegaMoo and UndertowTruck" href="Rule34.xml">
   <script src="awesomplete.min.js" type="text/javascript"></script>
   <title>Rule34 Favorites Search</title>
 </head>
@@ -29,10 +29,10 @@
   
 var finishedCount = 0;
 var maximumConcurrentThreads = 40;
-  
+
 // Try to load the previous value from the saved cookie
 document.getElementById("userId").value = getCookie("userId");
- 
+
 // Loads the page
 function loadPage()
 {
@@ -70,7 +70,7 @@ function loadPage()
 
 	var enteredMaxThreads = parseInt(document.getElementById("maxThreads").value);
 	if (!isNaN(enteredMaxThreads))
-	    maximumConcurrentThreads = enteredMaxThreads;
+		maximumConcurrentThreads = enteredMaxThreads;
 
 	// Send the request for the page
 	var httpRequest = new XMLHttpRequest();
@@ -148,7 +148,7 @@ function getThumbs(doc, commands)
 	{
 		// Get the thumb
 		var thumb = thumbs[i];
-  
+
 		// Set the href
 		var as = thumb.getElementsByTagName("a");
 		as[0].href = "https://rule34.xxx/index.php" + as[0].search;
@@ -233,7 +233,7 @@ function loadContent(doc, commands)
 
 	// Get the content div
 	var contentDiv = document.getElementById("content");
-	
+
 	// Get all the new thumbs and add them to the existing document
 	var newThumbs = getThumbs(doc, commands);	
 	var thumbs = document.getElementsByClassName("thumb");
@@ -673,5 +673,5 @@ function getCookie(name) {
 	if (parts.length === 2) return parts.pop().split(';').shift();
 	return "";
 }
-  
-  </script></body></html>
+
+</script></body></html>
