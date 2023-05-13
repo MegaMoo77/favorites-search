@@ -218,6 +218,7 @@ function sendNext(offset, commands)
 		}
 	}
 	httpRequest.open('GET', "https://cors-anywhere2.onrender.com/https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId + "&pid=" + (1 * offset), true);
+	httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 	httpRequest.send();
 }
 
