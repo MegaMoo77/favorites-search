@@ -1,5 +1,7 @@
 # Search Documentation
 
+Join the discussion in the Github here: https://github.com/MegaMoo77/favorites-search
+
 ## Introduction
  
 This document will describe how to use search commands to get the images you want.

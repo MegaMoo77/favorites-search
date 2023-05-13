@@ -191,7 +191,7 @@ function sendNext(offset, commands)
 	var httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function()
 	{
-		if (httpRequest.status == 503)
+		if (httpRequest.status == 503 || httpRequest.status == 404)
 		{
 			attempt++;
 			if (attempt < 3)
@@ -656,7 +656,7 @@ function deleteShowHide(testDiv)
 
 async function sleepAndRetry(offset, commands)
 {
-	await sleep(100);
+	await sleep(500);
 	sendNext(offset, commands);
 }
 
@@ -665,7 +665,7 @@ function stopItAll()
 {
 	window.stop();
 	document.getElementById("spinner").style.display = "none";
-	}
+}
 
 // Gets the value of a specific cookie
 function getCookie(name) {
