@@ -1,0 +1,79 @@
+
+<!-- saved from url=(0014)about:internet -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {
+   color: black;
+}
+</style></head><body><h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#search-documentation">Search Documentation</a></li>
+<li><a href="#images">Images</a></li>
+<li><a href="#failed-requests">Failed Requests</a></li>
+<li><a href="#advanced-mode">Advanced Mode</a></li>
+<li><a href="#additional-info">Additional Info</a></li>
+</ul>
+<h1 id="introduction">Introduction</h1>
+<p>The Favorites Searcher was originally created by MegaMoo. Original forum post here <a href="https://rule34.xxx/?page=forum&amp;s=view&amp;id=6649">https://rule34.xxx/?page=forum&amp;s=view&amp;id=6649</a>. Many additions were then added by UndertowTruck including wildcard, or, exclude, etc support for searches. The github repository for this project is at <a href="https://github.com/MegaMoo77/favorites-search">https://github.com/MegaMoo77/favorites-search</a></p>
+<h1 id="search-documentation">Search Documentation</h1>
+<h2 id="introduction">Introduction</h2>
+<p>This section will describe how to use search commands to get the images you want.</p>
+<p>There are 5 basic commands that are used by this search engine. They are the TAG, EXCLUDE, WILD, EXCLUDEWILD, and OR commands. Here is how to use each one.</p>
+<h3 id="tag">TAG</h3>
+<p>The TAG command is a basic command. It is just a single word, and it requests that an image contain this word as a tag. If you want an image to contain multiple tags, create a bunch of tag commands and separate them with at least one space.</p>
+<p>Example: dog red animal</p>
+<p>This input requests that an image contains the tags "dog", "red", and "animal"</p>
+<h3 id="exclude">EXCLUDE</h3>
+<p>The EXCLUDE command is like the TAG command. It is also a single word. However, this word is prefixed with the "-" minus symbol. This command requests that an image NOT contain the tag.</p>
+<p>Example: animal -dog</p>
+<p>This input requests that the image contains animal, but not dog. If the picture contains animal and dog, then the picture is not included.</p>
+<h3 id="wild">WILD</h3>
+<p>The WILD command is a wildcard command. It is a single word, but some of the characters are '*', which are spots where anything can go. This command requests that an image contain a tag that matches the wildcard pattern.</p>
+<p>Example: fl* dog</p>
+<p>This input requests images that contain dog and also contain floor or flood or fluffy or flat, etc.</p>
+<p>Example: *and*</p>
+<p>This input requests images that contain "and", or "candy", or "hand", or "andes", etc.</p>
+<h3 id="excludewild">EXCLUDEWILD</h3>
+<p>The EXCLUDEWILD command is a combination of the WILD and EXCLUDE commands. It is a word prefixed with "-" minus symbol, but also contains "*". This command requests that an image NOT contain a tag that matches the wildcard pattern.</p>
+<p>Example: -fl* dog</p>
+<p>This input requests that an image contain dog, but doesn't contain any of the tags floor, flat, flood, fluffy, flat, etc.</p>
+<h3 id="or">OR</h3>
+<p>The OR command is a very complex command. It consists of a pair of parantheses with commands inside, all separated by the ~ symbol. There must be spaces between the ~ and the commands, and also there must be space between the commands and the parantheses.</p>
+<p>INVALID: (dog~cat)</p>
+<p>INVALID: ( dog~cat )</p>
+<p>INVALID: ( dog~ cat )</p>
+<p>VALID: ( dog ~ cat )</p>
+<p>Additionally, if you want to use more than one or command, make sure they are separated by spaces.</p>
+<p>INVALID: ( dog ~ cat )( red ~ blue ~ green )</p>
+<p>VALID: ( dog ~ cat ) ( red ~ blue ~ green )</p>
+<p>Note that prefixing an OR command with a "-" minus symbol does nothing. -( dog ~ cat ) means the same as ( dog ~ cat ).</p>
+<p>This command requests that AT LEAST ONE of the commands contained in the or command is true.</p>
+<p>Example: ( blu* ~ -big ~ -dog ~ kind ) log</p>
+<p>This command requests that an image contains log, and that it also contains a tag matching blu* (like blue or bluer), or doesn't contain a tag matching big (like big or bigger), or doesn't contain dog, or contains kind.</p>
+<p>Usage Notes
+Since '*' is used to specify commands, requesting images with tags that contain these special characters is unlikely to work.</p>
+<p>Any input is lowercased since all tags on this site are lowercase. So, "RaDi0" will be interpreted as "radi0".</p>
+<h1 id="images">Images</h1>
+<p>Each image that is displayed will have these features</p>
+<ul>
+    <li>The image itself, which leads to the post on the site when clicked</li>
+<li>An oval with a green outline on the top that displays the post ID</li>
+<li>A red X button that will remove the post from your favorites if you are logged in</li>
+<li>A link that says 'Original Image' that will redirect to you to the original highest quality image file on Rule34</li></ul>
+<p>If advanced mode is active, there will also be a label underneath the image that displays data about the image, like its score</p>
+<h1 id="failed-requests">Failed Requests</h1>
+<p>When a request for a page or API data fails, it will show up in this box. You can hit the red retry button to retry the request. If it was successful, the button will turn green, and the failed request item will fade out. Otherwise, it will remain red</p>
+<h1 id="advanced-mode">Advanced Mode</h1>
+<p>When the advanced mode checkbox is checked, advanced mode will be enabled. This means that when you hit the submit button, API data for each post will also be requested. </p>
+<p>Statistics like rating, score, upload date, etc will be available, which will allow you to use features in the advanced mode user interface.</p>
+<p>The checkboxes titled "Explicit", "Questionable", and "Safe" determine what posts can be displayed based on the rating. Note that these checkboxes don't automatically filter out requested images, so you may have to check and uncheck the box after all images are loaded.</p>
+<p>The dropdown by the text that says "Sort By" allows you to sort images by score, post ID, height, width, or last update date. Additionally, the checkbox next to it allows you to select whether you want to sort in ascending or descending order.</p>
+<p>Finally, there is a dropdown that allows you to select what statistic to display. The statistic, such as score or post ID, will be displayed beneath the image in black text.</p>
+<h1 id="additional-info">Additional Info</h1>
+<p>API requests usually fail if the post was uploaded to Rule34 recently. The post's data likely hasn't been put into the API Database yet. </p><p></p>
+<p>
+Page and API requests are cached for the session, so they won't reflect recent changes. You need to refresh the page if you favorite more posts.
+</p>
+<p>
+If you find any bugs, please send UndertowTruck or MegaMoo a message through Rule34 mail or open an issue on the Github repository
+</p><p></p>
+</body></html>

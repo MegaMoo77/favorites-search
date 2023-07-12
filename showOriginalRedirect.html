@@ -2,37 +2,34 @@
 	// Get the url params
 	const urlParams = new URLSearchParams(window.location.search);
 	var id = urlParams.get('id');
-	
-	if (id != "")
+	console.log(id)
+	if (id != null)
 	{
+		console.log(id)
 		var httpRequest = new XMLHttpRequest();
-		httpRequest.open('POST', "https://cors-anywhere2.onrender.com/https://rule34.xxx/index.php?page=post&s=view&id=" + id, true);
+		httpRequest.open('GET', "https://cors-anywhere2.onrender.com/https://rule34.xxx/index.php?page=post&s=view&id=" + id, true);
 		httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 		httpRequest.onreadystatechange = function () {
 			if (this.readyState == 4)
 			{
 				// Get the response text
-				var responseText = httpRequest.responseText;
-				
-				var parser = new DOMParser();
-				var element = parser.parseFromString(responseText, 'text/html');
-				//element.innerHTML = responseText;
-				var linkList = element.getElementsByClassName("link-list")[0];
-				var ul = linkList.getElementsByTagName("UL")[0];
-				var lis = ul.getElementsByTagName("LI");
-				var li = null;
-				for (i = 0; i < lis.length; i++)
-				{
-					if (lis[i].innerHTML.includes("Original"))
-					{
-						li = lis[i];
-						break;
-					}
+				const responseText = httpRequest.responseText;
+				const parser = new DOMParser();
+				const responseHTML = parser.parseFromString(responseText, 'text/html');
+				const linkList = responseHTML.getElementsByClassName("link-list")[0];
+				const ul = linkList.getElementsByTagName("ul")[0];
+				const lis = ul.getElementsByTagName("li");
+				let originalImageLink = null
+				for (let li of lis) {
+					const a_tag = li.getElementsByTagName('a')[0]
+					console.log(a_tag)
+					if (a_tag.href.slice(-1) != '#') {
+						originalImageLink = a_tag.href
+						break
+					} 
 				}
-				var a = li.getElementsByTagName("a")[0];
-				var href = a.href;
-				//href = href.substring(0, href.indexOf('?')); // Remove any url params cuz things get weird
-				window.location.href = href;
+				originalImageLink = originalImageLink.substring(0, originalImageLink.indexOf('?')) // Remove any url params cuz things get weird
+				window.location.href = originalImageLink;
 			}
 		}
 		httpRequest.send();
