@@ -24,8 +24,8 @@
 			<input type="checkbox" id="advancedMode">
 			<label for="advancedMode" style="white-space:pre-wrap;">Advanced Mode (loads API data for images, allowing you to sort and filter them)</label>
 			<br>
-			<input type="checkbox" id="disableUI">
-			<label for="disableUI">Minimize UI</label>
+			<input type="checkbox" id="expandUI">
+			<label for="expandUI">Expand UI</label>
 			<br>
 			<p id="interpretation"> Command interpretation will display here </p>
 			<!-- Event listener for button in ui.js-->
@@ -35,7 +35,7 @@
 			<div style="display: inline;">
 				<a id="random" href="javascript:void(0)" onmousedown="changeRandom()" style="display: none" target="_blank">Random</a>
 			</div>
-			<div id="subUI">
+			<div id="subUI" style="display: none;">
 				<div id="flexElementContainer">
 					<div class="subUIelement" id="failedRequestContainer">
 						<h3 style="text-align: center">Failed Requests</h3>
@@ -55,6 +55,7 @@
 							<label for="questionable">Questionable</label>
 							<input type="checkbox" id="safe" checked>
 							<label for="safe">Safe</label>
+							<button type="button" id="applyFilters" style="float: right;">Apply Filters</button>
 						</div>
 						<br>
 						<div>
@@ -69,6 +70,7 @@
 							</select>
 							<label for="sortDescendingOption">Descending</label>
 							<input type="checkbox" id="sortDescendingOption" checked>
+							<button type="button" id="sortButton">Sort Posts</button>
 						</div>
 						<br>
 						<div>
