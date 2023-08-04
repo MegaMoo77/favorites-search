@@ -42,9 +42,7 @@ async function requestPage(userID, pageNum, attemptsLeft, abortSignal) {
 		console.error(`Too many failed attempts rerequesting page ${pageNum}`)
 		return null
 	}
-	// Desktop user-agent header prevents issues on mobile
-	const headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
-	const requestedDoc = fetch(CORSprefix + "https://rule34.xxx/index.php?page=favorites&s=view&id=" + userID + "&pid=" + ((pageNum-1)*50), {signal:abortSignal, headers:headers})
+	const requestedDoc = fetch(CORSprefix + "https://rule34.xxx/index.php?page=favorites&s=view&id=" + userID + "&pid=" + ((pageNum-1)*50), {signal:abortSignal})
 		.then( async (response) => {
 			if (!response.ok) {
 				throw new Error(`Failed to request page ${pageNum}. Retrying with ${attemptsLeft-1} attempts left ...\nError ${response.status} description: ${response.statusText}`)
@@ -225,9 +223,7 @@ async function loadPage()
 
 			return null
 		}
-		// Desktop user-agent header prevents issues on mobile
-		const headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
-		const requestedDoc = fetch(CORSprefix + "https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId, {signal:abortSignal, headers:headers})
+		const requestedDoc = fetch(CORSprefix + "https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId, {signal:abortSignal})
 			.then( async (response) => {
 				if (!response.ok) {
 					throw new Error(`Failed to request initial favorites page. Retrying with ${attemptsLeft-1} attempts left ...\nError ${response.status} description: ${response.statusText}`)
@@ -390,9 +386,7 @@ async function sendNext(offset, commands, advanced, abortSignal)
 			failedPageRequestHandler(userId, offset/50 + 1, advanced)
 			return null
 		}
-		// Desktop user-agent header prevents issues on mobile
-		const headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
-		const requestedDoc = fetch(CORSprefix + "https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId + "&pid=" + offset, {signal:abortSignal, headers:headers})
+		const requestedDoc = fetch(CORSprefix + "https://rule34.xxx/index.php?page=favorites&s=view&id=" + userId + "&pid=" + offset, {signal:abortSignal})
 			.then( async (response) => {
 				if (!response.ok) {
 					throw new Error(`Failed to request page ${pageNum}. Retrying with ${attemptsLeft-1} attempts left ...\nError ${response.status} description: ${response.statusText}`)
