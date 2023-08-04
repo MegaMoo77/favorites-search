@@ -18,6 +18,24 @@ var globalAbortSignal = abortController.signal
 // Try to load the previous value from the saved cookie
 document.getElementById("userId").value = getCookie("userId");
 
+// sanitizes incoming favorites pages to help fix bugs
+function cleanFavoritesPage(doc) {
+	// Fixes bug where using site on mobile replaces image src attribute with data-cfsrc instead, preventing images from loading
+	// Also removes styling that hides images
+	let images = doc.getElementsByTagName('img')
+	for (let image of images) {
+		// check if image src attribute replaced with data-cfsrc attribute and correct it
+		if (image.hasAttribute("data-cfsrc")) {
+			const image_cfsrc = image.getAttribute("data-cfsrc")
+			image.setAttribute("src", image_cfsrc)
+			// remove bad styling
+			image.setAttribute("style", "")
+			// remove bad attribute
+			image.removeAttribute("data-cfsrc")
+		}
+	}
+}
+
 // use in failed page request handler
 async function requestPage(userID, pageNum, attemptsLeft, abortSignal) {
 	if (attemptsLeft == 0) {
@@ -32,15 +50,20 @@ async function requestPage(userID, pageNum, attemptsLeft, abortSignal) {
 				throw new Error(`Failed to request page ${pageNum}. Retrying with ${attemptsLeft-1} attempts left ...\nError ${response.status} description: ${response.statusText}`)
 			} else {
 				// when response received
-				// Get the response text and cache it
+				// Get the response text
 				const responseText = await response.text();
-				cacheResponse(userID, pageNum, responseText)
-				console.log(`Successfully rerequested page ${pageNum}`)
 
 				// Parse the document
 				const parser = new DOMParser();
 				let doc = parser.parseFromString(responseText, "text/html");
+				cleanFavoritesPage(doc)
 
+				// convert cleaned page to string to cache
+				const cacheString = new XMLSerializer().serializeToString(doc)
+				cacheResponse(userID, pageNum, cacheString)
+
+				console.log(`Successfully rerequested page ${pageNum}`)
+				
 				return doc
 			}
 		})
@@ -213,13 +236,16 @@ async function loadPage()
 					// Get the response text and cache it
 					const responseText = await response.text();
 
-					cacheResponse(userId, 1, responseText)
-
-					console.log(`Successfully requested first favorites page`)
-
 					// Parse the document
 					const parser = new DOMParser();
-					const doc = parser.parseFromString(responseText, "text/html");
+					let doc = parser.parseFromString(responseText, "text/html");
+					cleanFavoritesPage(doc)
+
+					// convert cleaned page to string to cache
+					const cacheString = new XMLSerializer().serializeToString(doc)
+					cacheResponse(userId, 1, cacheString)
+
+					console.log(`Successfully requested first favorites page`)
 
 					return doc
 				}
@@ -374,12 +400,16 @@ async function sendNext(offset, commands, advanced, abortSignal)
 					// when response received
 					// Get the response text and cache it
 					const responseText = await response.text();
-					cacheResponse(userId, pageNum, responseText)
-					console.log(`Successfully requested page ${offset/50 + 1}`)
 
 					// Parse the document
 					const parser = new DOMParser();
 					let doc = parser.parseFromString(responseText, "text/html");
+					cleanFavoritesPage(doc)
+
+					// convert cleaned page to string to cache
+					const cacheString = new XMLSerializer().serializeToString(doc)
+					cacheResponse(userId, pageNum, cacheString)
+					console.log(`Successfully requested page ${offset/50 + 1}`)
 
 					return doc
 				}
