@@ -1,11 +1,15 @@
 // Takes care of loading images
 
+
 const CORSprefix = 'https://cors-anywhere2.onrender.com/'
 const maxRequestAttempts = 3
 
 // keeps track of all favorites page data requested for each user
 // key is user ID and value is a map with key page number and value of page's html text
 var users = new Map()
+
+// list of ImportedFile objects
+var importedFiles = []
 
 var finishedCount = 0;
 var maximumConcurrentThreads = 40;
@@ -39,7 +43,7 @@ function cleanFavoritesPage(doc) {
 // use in failed page request handler
 async function requestPage(userID, pageNum, attemptsLeft, abortSignal) {
 	if (attemptsLeft == 0) {
-		console.error(`Too many failed attempts rerequesting page ${pageNum}`)
+		console.error(`Too many failed attempts requesting page ${pageNum}`)
 		return null
 	}
 	const requestedDoc = fetch(CORSprefix + "https://rule34.xxx/index.php?page=favorites&s=view&id=" + userID + "&pid=" + ((pageNum-1)*50), {signal:abortSignal})
@@ -55,12 +59,12 @@ async function requestPage(userID, pageNum, attemptsLeft, abortSignal) {
 				const parser = new DOMParser();
 				let doc = parser.parseFromString(responseText, "text/html");
 				cleanFavoritesPage(doc)
-
+				
 				// convert cleaned page to string to cache
 				const cacheString = new XMLSerializer().serializeToString(doc)
 				cacheResponse(userID, pageNum, cacheString)
 
-				console.log(`Successfully rerequested page ${pageNum}`)
+				console.log(`Successfully requested page ${pageNum}`)
 				
 				return doc
 			}
@@ -211,6 +215,10 @@ async function loadPage()
 	if (!isNaN(enteredMaxThreads))
 		maximumConcurrentThreads = enteredMaxThreads;
 
+	// load in imported images
+	for (const importedFile of importedFiles) {
+		displayImportedFile(importedFile);
+	}
 	// conducts request for first page of favorites
 	async function requestInitial(attemptsLeft) {
 		if (attemptsLeft == 0) {
@@ -336,9 +344,9 @@ async function loopUntilDone(count, commands, userId, offset, advanced, abortSig
 
 // post ID from thumbnail element
 function getIDfromThumb(thumb) {
-	const as = thumb.getElementsByTagName("a")[0]
-	id = parseInt(as.id.match(/(\d+)/)[0])
-	return id
+	const as = thumb.getElementsByTagName("a")[0];
+	const id = parseInt(as.id.match(/(\d+)/)[0]);
+	return id;
 }
 
 

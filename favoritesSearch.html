@@ -8,6 +8,7 @@
 		<script src="tag-logic.js" type="text/javascript" defer></script>
 		<script src="misc.js" type="text/javascript" defer></script>
 		<script src="loading.js" type="text/javascript" defer></script>
+		<script src="import-export.js" type="text/javascript" defer></script>
 		<script src="ui.js" type="text/javascript" defer></script>
 		<title>Rule34 Favorites Search</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin="true">
@@ -41,6 +42,21 @@
 						<h3 style="text-align: center">Failed Requests</h3>
 						<nav id = "failedRequestNav">
 							<ul id="failedRequestList">
+
+							</ul>
+						</nav>
+					</div>
+					<div class="subUIelement" id="fileManager">
+						<h3 style="text-align: center">Import/Export Favorites</h3>
+							<div id="fileManagerButtons">
+								<button type="button" id="importButton" onclick="document.getElementById('importFavorites').click()">Import</button>
+								<input type="file" id="importFavorites" multiple="multiple" style="display: none;" accept=".txt, .json"></input>
+								<button type="button" id="exportFavorites">Export</button>
+								<button type="button" id= "submitImportQuery">Filter Imports</button>
+							</div>
+							<div class="awesomplete" id="importQueryDiv"><input id="importQuery" placeholder="Enter tags to filter imported posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
+						<nav id = "importedFilesNav">
+							<ul id="importedFilesList">
 
 							</ul>
 						</nav>
