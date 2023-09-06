@@ -1,7 +1,7 @@
 // Takes care of loading images
 
 const CORSprefix = 'https://cors-anywhere2.onrender.com/'
-const maxRequestAttempts = 3
+const maxRequestAttempts = 20
 
 // keeps track of all favorites page data requested for each user
 // key is user ID and value is a map with key page number and value of page's html text
@@ -415,7 +415,7 @@ async function sendNext(offset, commands, advanced, abortSignal)
 				}
 				// Try again if request failed
 				console.error(error.message)
-				sleep(500)
+				sleep(1000)
 				return requestNext(attemptsLeft-1)
 			})
 		const output = await requestedDoc
@@ -563,7 +563,7 @@ async function loadContent(doc, commands, advanced, abortSignal)
 		// Set the href
 		var as = thumb.getElementsByTagName("a");
 		as[0].href = "https://rule34.xxx/index.php" + as[0].search;
-		as[0].onclick = "";
+		as[0].removeAttribute("onclick");
 
 		var imgs = as[0].getElementsByTagName("img");
 		var img = imgs[0]
