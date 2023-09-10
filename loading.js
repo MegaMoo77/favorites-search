@@ -553,7 +553,6 @@ async function loadContent(doc, commands, advanced, abortSignal)
 	for (var i = 0; i < newThumbs.length; i++)
 	{
 		var thumb = newThumbs[i];
-		console.log(thumb)
 		thumb.id = getIDfromThumb(thumb)
 
 		// display post ID

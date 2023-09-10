@@ -205,6 +205,7 @@ async function customPageRequestHandler(userID, pageNum) {
 	// add button list item element to handle custom request
 	const listItem = document.createElement('li')
 	listItem.style.position = 'relative'
+
 	const button = document.createElement('button')
 	button.type = "button"
 	button.classList.add('rerequest')
@@ -231,7 +232,6 @@ async function customPageRequestHandler(userID, pageNum) {
 			label.textContent = `Failed to request page ${pageNum} for user ${userID}`
 			button.disabled = false
 		} else {
-			// success!
 			button.classList.add('success')
 			button.classList.remove('pending')
 			label.textContent = `Successfully requested page ${pageNum} for user ${userID}`
@@ -245,6 +245,31 @@ async function customPageRequestHandler(userID, pageNum) {
 			setTimeout(()=> {
 				list.removeChild(listItem)
 			}, seconds*1000)
+			
+			// TODO! Create X button to remove custom page request
+			// Now add element to remove page
+			// add delete list item element
+			const deleteListItem = document.createElement('li')
+			deleteListItem.style.position = 'relative'
+			const deleteButton = document.createElement('button')
+			deleteButton.type = "button"
+			deleteButton.textContent = "X"
+			deleteButton.classList.add('remove')
+
+
+			const deleteLabel = document.createElement('label')
+			deleteLabel.style = "position: absolute; padding: 4px; margin-left: 10px"
+			deleteLabel.textContent = `Page ${pageNum} for user ${userID}`
+
+			deleteListItem.appendChild(deleteButton)
+			deleteListItem.appendChild(deleteLabel)
+
+			list.appendChild(deleteListItem)
+
+			button.addEventListener('click', async evt => {
+				// TODO! Add function here that removes page from list of custom pages
+				list.removeChild(deleteListItem);
+			})
 		}
 	})
 
@@ -280,6 +305,31 @@ async function customPageRequestHandler(userID, pageNum) {
 					setTimeout(()=> {
 						list.removeChild(listItem)
 					}, seconds*1000)
+
+					// TODO! Create X button to remove custom page request
+					// Now add element to remove page
+					// add delete list item element
+					const deleteListItem = document.createElement('li')
+					deleteListItem.style.position = 'relative'
+					const deleteButton = document.createElement('button')
+					deleteButton.type = "button"
+					deleteButton.textContent = "X"
+					deleteButton.classList.add('remove')
+
+
+					const deleteLabel = document.createElement('label')
+					deleteLabel.style = "position: absolute; padding: 4px; margin-left: 10px"
+					deleteLabel.textContent = `Page ${pageNum} for user ${userID}`
+
+					deleteListItem.appendChild(deleteButton)
+					deleteListItem.appendChild(deleteLabel)
+
+					list.appendChild(deleteListItem)
+
+					button.addEventListener('click', async evt => {
+						// TODO! Add function here that removes page from list of custom pages
+						list.removeChild(deleteListItem);
+					})
 				}
 			})
 		}
