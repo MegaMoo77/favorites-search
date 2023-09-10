@@ -43,13 +43,19 @@ span.thumb > label {
     flex-basis: 30em;
     padding-bottom: 0;
 }
-#failedRequestNav {
+.requestNav {
     overflow-y: auto; 
 }
 
-#failedRequestList {
+.requestList {
     list-style-type: none;
     margin: 1em
+}
+
+#customRequestContainer {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
 }
 
 /* File Import Export UI */

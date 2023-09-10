@@ -48,13 +48,11 @@ var getCookie = (name) => {
 var addShowOriginal = (thumb, img, as) =>
 {
 	let href = ''
-
+	const id = thumb.id
 	// if API data successfully loaded, get original image link from there
 	if (thumb.metadata != undefined) {
 		href = thumb.metadata.originalImageURL
 	} else {
-		// Get the id from thumb
-		var id = thumb.id
 		href = "showOriginalRedirect.html?id=" + id;
 	}
 

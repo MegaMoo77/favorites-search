@@ -40,8 +40,24 @@
 				<div id="flexElementContainer">
 					<div class="subUIelement" id="failedRequestContainer">
 						<h3 style="text-align: center">Failed Requests</h3>
-						<nav id = "failedRequestNav">
-							<ul id="failedRequestList">
+						<nav class = "requestNav" id="failedRequestNav">
+							<ul class="requestList" id="failedRequestList">
+
+							</ul>
+						</nav>
+					</div>
+					<div class="subUIelement" id="customRequestContainer">
+						<h3 style="text-align: center">Custom Requests</h3>
+						<form autocomplete="on" action="javascript:void(0);">
+							<div>
+								<input type="text" id="customID" placeholder="User Id" autocomplete="on" size="15">
+								<input type="number" id="customPage" placeholder="Page" autocomplete="on" style="width:5em">
+								<button type="button" id="requestCustomPage">Request Page</button>
+							</div>
+						</form>
+						
+						<nav class = "requestNav">
+							<ul class="requestList" id="customRequestList">
 
 							</ul>
 						</nav>

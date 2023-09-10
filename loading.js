@@ -553,6 +553,7 @@ async function loadContent(doc, commands, advanced, abortSignal)
 	for (var i = 0; i < newThumbs.length; i++)
 	{
 		var thumb = newThumbs[i];
+		console.log(thumb)
 		thumb.id = getIDfromThumb(thumb)
 
 		// display post ID
@@ -571,7 +572,7 @@ async function loadContent(doc, commands, advanced, abortSignal)
 		// Set the href
 		var as = thumb.getElementsByTagName("a");
 		as[0].href = "https://rule34.xxx/index.php" + as[0].search;
-		as[0].onclick = "";
+		as[0].removeAttribute("onclick");
 
 		var imgs = as[0].getElementsByTagName("img");
 		var img = imgs[0]

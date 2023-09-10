@@ -36,7 +36,7 @@ class ThumbElementData {
 					<span class="badge">${id}</span>
 				</div>
 			</div>
-			<a href="${postSourcePrefix}${id}" id="p${id}" onclick="document.location='index.php?page=post&s=view&id=${id}'; return false;" target="_blank">
+			<a href="${postSourcePrefix}${id}" id="p${id}" target="_blank">
 				<img src="${thumbnailSrc}" title="${tags}" border="0" alt="image_thumb">
 			</a>
 		`;   
