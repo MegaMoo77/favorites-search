@@ -11,6 +11,9 @@ var users = new Map()
 // list of ImportedFile objects
 var importedFiles = []
 
+// list of CustomPageRequest objects
+var customRequests = []
+
 var finishedCount = 0;
 var maximumConcurrentThreads = 40;
 

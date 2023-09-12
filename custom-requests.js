@@ -1,5 +1,11 @@
 // Handles user made page requests
-// handles custom page requests (based on failedPageRequestHandler)
+
+class CustomPageRequest {
+    constructor(userID, pageNum) {
+        this.id = userID
+        this.pageNumber = pageNum
+    }
+}
 
 // Changes button state and adds button to remove custom page request from display (Used in customPageRequestHandler)
 async function afterCustomPageReceived(doc, userID, pageNum, button, listItem, label) {
@@ -51,7 +57,9 @@ async function afterCustomPageReceived(doc, userID, pageNum, button, listItem, l
         })
     }
 }
+
 // TODO! Get pages from cache if available
+// handles custom page requests (based on failedPageRequestHandler)
 async function customPageRequestHandler(userID, pageNum) {
 	const list = document.getElementById('customRequestList')
 
