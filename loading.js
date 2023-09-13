@@ -516,9 +516,13 @@ var displayData = (thumb, statistic) => {
 	}
 }
 
-// TODO! Create a function that will take in a document and extract post data from all thumbs and return as an array
 function extractPagePostData(doc) {
-	let outputData = []
+	let outputData = [];
+	const thumbs = doc.getElementsByClassName("thumb");
+	for (const thumb of thumbs) {
+		outputData.push(ThumbElementData.fromThumb(thumb));
+	}
+	return outputData;
 }
 
 // Loads the page content
