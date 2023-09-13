@@ -516,6 +516,11 @@ var displayData = (thumb, statistic) => {
 	}
 }
 
+// TODO! Create a function that will take in a document and extract post data from all thumbs and return as an array
+function extractPagePostData(doc) {
+	let outputData = []
+}
+
 // Loads the page content
 async function loadContent(doc, commands, advanced, abortSignal)
 {

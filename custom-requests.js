@@ -41,7 +41,6 @@ async function afterCustomPageReceived(doc, userID, pageNum, button, listItem, l
             list.removeChild(listItem)
         }, seconds*1000)
         
-        // TODO! Create X button to remove custom page request
         // Now add element to remove page
         // add delete list item element
         const deleteListItem = document.createElement('li')

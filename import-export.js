@@ -17,6 +17,26 @@ class ThumbElementData {
         this.tags = tags;
         this.metadata = metadata
     }
+
+    /**
+     * Creates a ThumbElementData object from a thumb element
+     * @param {HTMLSpanElement} thumb 
+     */
+    static fromThumb(thumb) {
+        let id = null;
+        // Thumb elements straight from site don't have ID attribute, but displayed thumbs usually do
+        if (thumb.hasAttribute("id")) {
+            id = thumb.id;
+        } else {
+            id = getIDfromThumb(thumb);
+        }
+        const imageElement = thumb.getElementsByTagName("img")[0];
+        const imageSrc = imageElement.src;
+        const tags = imageElement.title;
+        const metadata = thumb.metadata
+        return new ThumbElementData(id, imageSrc, tags, metadata)
+    }
+
 	/**
 	 * Creates an HTML element from the data provided
 	 */
