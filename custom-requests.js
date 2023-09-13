@@ -1,10 +1,18 @@
 // Handles user made page requests
 
 class CustomPageRequest {
-    constructor(userID, pageNum) {
-        this.id = userID
+    /**
+     * Keeps track of all portions of data that a custom page request should have
+     * @param {Number} userID Number representing user ID of page request
+     * @param {Number} pageNum Number representing page number of page request
+     * @param {ThumbElementData[]} posts Array representing data of each post inside page
+     */
+    constructor(userID, pageNum, posts) {
+        this.userID = userID
         this.pageNumber = pageNum
+        this.posts = posts
     }
+    
 }
 
 // Changes button state and adds button to remove custom page request from display (Used in customPageRequestHandler)
@@ -20,6 +28,8 @@ async function afterCustomPageReceived(doc, userID, pageNum, button, listItem, l
         button.classList.add('success')
         button.classList.remove('pending')
         label.textContent = `Successfully requested page ${pageNum} for user ${userID}`
+
+        // TODO! When loading in document, add reference to custom request used to load in the posts, so that these posts can be removed later when the custom request is removed
         // load entire document using currently inputted commands
         await loadContent(doc, get_commands(document.getElementById("tags").value), advancedMode.checked, globalAbortSignal)
         
