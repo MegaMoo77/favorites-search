@@ -156,7 +156,6 @@ function displayImportedFile(importedFile) {
     /**
      * Displays imported images in an ImportedFile object
      * @param {ImportedFile} importedFile 
-     * @param {String[]} command Represents array of strings representing tag filtering commands
      */
     const contentDiv = document.getElementById("content");
     for (const post of importedFile.posts) {

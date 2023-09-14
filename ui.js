@@ -206,4 +206,20 @@ requestCustomPage.addEventListener('click', async evt => {
 	await customPageRequestHandler(userID, pageNum);
 })
 
+// by UndertowTruck
+// Custom posts filtering
+submitCustomQuery.addEventListener('click', evt => {
+	const commands = get_commands(document.getElementById("customQuery").value);
+    for (const thumb of Array.from(document.getElementsByClassName("thumb"))) {
+		// only filter custom request posts
+        if (thumb.request != undefined) {
+			const tags = thumb.getElementsByTagName("img")[0].title.split(" ");
+			if (isMatch(tags, commands)) {
+				thumb.style.display = "inline-block";
+			} else {
+				thumb.style.display = "none";
+			}
+		}
+    }
+})
 

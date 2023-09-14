@@ -222,6 +222,10 @@ async function loadPage()
 	for (const importedFile of importedFiles) {
 		displayImportedFile(importedFile);
 	}
+	// Load in custom requests
+	for (const customRequest of customRequests) {
+		displayCustomRequest(customRequest);
+	}
 	// conducts request for first page of favorites
 	async function requestInitial(attemptsLeft) {
 		if (attemptsLeft == 0) {

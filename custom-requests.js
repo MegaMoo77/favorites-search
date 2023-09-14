@@ -17,21 +17,24 @@ class CustomPageRequest {
 
 // Changes button state and adds button to remove custom page request from display (Used in customPageRequestHandler)
 async function afterCustomPageReceived(doc, userID, pageNum, button, listItem, label) {
-    const list = document.getElementById('customRequestList')
+    const list = document.getElementById('customRequestList');
     if (doc == null) {
         // set to failure state
-        button.classList.add('failure')
-        button.classList.remove('pending')
-        label.textContent = `Failed to request page ${pageNum} for user ${userID}`
-        button.disabled = false
+        button.classList.add('failure');
+        button.classList.remove('pending');
+        label.textContent = `Failed to request page ${pageNum} for user ${userID}`;
+        button.disabled = false;
     } else {
-        button.classList.add('success')
-        button.classList.remove('pending')
-        label.textContent = `Successfully requested page ${pageNum} for user ${userID}`
+        button.classList.add('success');
+        button.classList.remove('pending');
+        label.textContent = `Successfully requested page ${pageNum} for user ${userID}`;
 
-        // TODO! When loading in document, add reference to custom request used to load in the posts, so that these posts can be removed later when the custom request is removed
-        // load entire document using currently inputted commands
-        await loadContent(doc, get_commands(document.getElementById("tags").value), advancedMode.checked, globalAbortSignal)
+        const postsData = extractPagePostData(doc);
+        // Create custom request object and save it
+        const customRequest = new CustomPageRequest(userID, pageNum, postsData);
+        customRequests.push(customRequest);
+        // Now load in posts
+        displayCustomRequest(customRequest);
         
         // fade out element code from https://stackoverflow.com/a/33424474
         const seconds = 2;
@@ -61,7 +64,7 @@ async function afterCustomPageReceived(doc, userID, pageNum, button, listItem, l
         list.appendChild(deleteListItem)
 
         deleteButton.addEventListener('click', async evt => {
-            console.log(deleteListItem)
+            removeCustomRequestAndThumbnails(customRequest);
             list.removeChild(deleteListItem);
         })
     }
@@ -112,4 +115,43 @@ async function customPageRequestHandler(userID, pageNum) {
 			})
 		}
 	})
+}
+
+function displayCustomRequest(customRequest) {
+    /**
+     * Displays posts in a CustomPageRequest object
+     * @param {CustomPageRequest} importedFile 
+     */
+    const contentDiv = document.getElementById("content");
+    for (const post of customRequest.posts) {
+        const element = post.toHTMLelement();
+        // include reference to custom request, which allows the program to see which request a post came from, and get rid of posts if the request is removed
+        element.request = customRequest;
+        contentDiv.insertBefore(element, document.getElementById("paginator"));
+    }
+}
+
+function removeCustomRequestAndThumbnails(customRequest) {
+    /**
+     * Removes custom request from list of custom requests, and removes thumbnails from it
+     * @param {CustomPageRequest} customRequest
+     */
+
+    // remove imported file from currently imported files list
+    for (let i = 0; i < customRequests.length; i++) {
+        const request = customRequests[i];
+        if (request === customRequest) {
+            console.log(`Custom request for page ${customRequest.pageNumber} for user ${customRequest.userID} removed`);
+            customRequests.splice(i,1);
+            break;
+        }
+    }
+
+    const contentDiv = document.getElementById("content");
+    // remove all thumbnails with reference to request
+    for (const thumb of Array.from(document.getElementsByClassName("thumb"))) {
+        if (thumb?.request === customRequest) {
+            contentDiv.removeChild(thumb);
+        }
+    }
 }
