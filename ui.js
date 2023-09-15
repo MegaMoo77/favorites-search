@@ -176,6 +176,7 @@ importFavorites.addEventListener('change', async evt => {
 
 // by UndertowTruck
 // export button
+// TODO! Add UI logic for export settings
 exportFavorites.addEventListener('click', evt => {
 	exportFavoritesFile()
 })
@@ -223,4 +224,5 @@ submitCustomQuery.addEventListener('click', evt => {
 		}
     }
 })
+
 

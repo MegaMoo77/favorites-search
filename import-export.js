@@ -81,14 +81,45 @@ class ImportedFile {
     }
 }
 
-// Takes all loaded <span class=thumb> elements and gathers data into a JSON string
-// TODO! Should handle duplicate posts (only keep first posts, or give option to keep first/last)
-function createFavoritesData () {
+/**
+ * Returns new array after removing duplicate ThumbElementData objects
+ * @param {ThumbElementData[]} postArray Boolean determining if duplicate post data are allowed in the output JSON data
+ * @param {String} duplicateOption 
+ * @returns {ThumbElementData[]}
+ */
+function removeDuplicatesFromArray(postArray, duplicateOption) {
+    let uniquePosts = new Map()
+    for (const postData of postArray) {
+        const postID = postData.id
+        // Keep first element out of duplicates
+        if (duplicateOption == "first") {
+            // if value already exists, refuse to update to ensure only first value is kept
+            if (!uniquePosts.has(postID)) {
+                uniquePosts.set(postID, postData)
+            }
+        } 
+        // Keep last element out of duplicates
+        else if (duplicateOption == "last") {
+            // update value so that later duplicate values replace earlier ones
+            uniquePosts.set(postID, postData)
+        }
+    }
+    // convert map to array, only keeping map values (not keys)
+    return Array.from(uniquePosts, ([postID, postData]) => postData)
+}
+
+/**
+ * Takes all loaded <span class=thumb> elements and gathers data into a JSON string
+ * @param {Boolean} removeDuplicates Boolean determining if duplicate post data are allowed in the output JSON data
+ * @param {String} duplicateOption String determining that when duplicates are being removed, should only the first post or last post be kept
+ * @returns {String} JSON String containing an array of post data (ThumbElementData objects)
+ */
+function createFavoritesData (removeDuplicates, duplicateOption) {
     let output = [];
     for (const thumb of document.getElementsByClassName('thumb')) {
         // if thumb is not visible, don't include it
         if (thumb.style.display == "none") {
-            continue
+            continue;
         }
         const id = parseInt(thumb.getAttribute("id"));
         const imageElement = thumb.getElementsByTagName('img')[0];
@@ -96,6 +127,9 @@ function createFavoritesData () {
         const tags = imageElement.getAttribute("title");
         const dataObj = new ThumbElementData(id, imageSrc, tags, thumb.metadata);
         output.push(dataObj);
+    }
+    if (removeDuplicates) {
+        output = removeDuplicatesFromArray(output, duplicateOption);
     }
     return JSON.stringify(output);
 }
