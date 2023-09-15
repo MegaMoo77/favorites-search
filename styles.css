@@ -64,11 +64,6 @@ span.thumb > label {
     flex-direction: column;
     padding-bottom: 0;
 }
-#fileManagerButtons {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-}
 #importQueryDiv {
     margin-left: auto;
     margin-right: auto;

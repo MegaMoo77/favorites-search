@@ -82,6 +82,7 @@ class ImportedFile {
 }
 
 // Takes all loaded <span class=thumb> elements and gathers data into a JSON string
+// TODO! Should handle duplicate posts (only keep first posts, or give option to keep first/last)
 function createFavoritesData () {
     let output = [];
     for (const thumb of document.getElementsByClassName('thumb')) {
