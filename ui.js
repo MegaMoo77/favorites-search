@@ -201,7 +201,8 @@ submitImportQuery.addEventListener('click', evt => {
 //by UndertowTruck
 // carries out custom page request
 requestCustomPage.addEventListener('click', async evt => {
-	const pageNum = document.getElementById("customPage").value;
+	// TODO! Cache behaves improperly if you don't use strings for userID and numbers for page number. Make sure cache can cooperate with either strings/numbers
+	const pageNum = parseInt(document.getElementById("customPage").value);
 	const userID = document.getElementById("customID").value;
 	await customPageRequestHandler(userID, pageNum);
 })

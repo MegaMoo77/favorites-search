@@ -97,9 +97,17 @@ async function customPageRequestHandler(userID, pageNum) {
 
 	// now wait for response
 	// once doc requested
-	await requestPage(userID, pageNum, maxRequestAttempts, globalAbortSignal).then(async doc => {
-		afterCustomPageReceived(doc, userID, pageNum, button, listItem, label)
-	})
+    // only request page if needed
+	if (!users.has(userID) || !users.get(userID).has(pageNum)) {
+		await requestPage(userID, pageNum, maxRequestAttempts, globalAbortSignal).then(async doc => {
+            afterCustomPageReceived(doc, userID, pageNum, button, listItem, label)
+        })
+	} else {
+        let doc = users.get(userID).get(pageNum);
+		doc = (new DOMParser()).parseFromString(doc, 'text/html');
+		console.log(`Page ${pageNum} for user ${userID} retrieved from cache`);
+        afterCustomPageReceived(doc, userID, pageNum, button, listItem, label)
+	}
 
     // If previous doc request failed, add ability to retry request to button
 	button.addEventListener('click', async evt => {
@@ -110,9 +118,16 @@ async function customPageRequestHandler(userID, pageNum) {
 			button.classList.add('pending')
 			button.classList.remove('failure')
 			label.textContent = `Currently requesting page ${pageNum} for user ${userID}`
-			await requestPage(userID, pageNum, maxRequestAttempts, globalAbortSignal).then(async doc => {
-				afterCustomPageReceived(doc, userID, pageNum, button, listItem, label)
-			})
+			if (!users.has(userID) || !users.get(userID).has(pageNum)) {
+                await requestPage(userID, pageNum, maxRequestAttempts, globalAbortSignal).then(async doc => {
+                    afterCustomPageReceived(doc, userID, pageNum, button, listItem, label)
+                })
+            } else {
+                let doc = users.get(userID).get(pageNum);
+                doc = (new DOMParser()).parseFromString(doc, 'text/html');
+                console.log(`Page ${pageNum} for user ${userID} retrieved from cache`);
+                afterCustomPageReceived(doc, userID, pageNum, button, listItem, label)
+            }
 		}
 	})
 }
