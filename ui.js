@@ -176,9 +176,10 @@ importFavorites.addEventListener('change', async evt => {
 
 // by UndertowTruck
 // export button
-// TODO! Add UI logic for export settings
 exportFavorites.addEventListener('click', evt => {
-	exportFavoritesFile()
+	const removeDuplicates = document.getElementById("removeDuplicates");
+	const duplicateOptionSelector = document.getElementById("removeDuplicatesOrder");
+	exportFavoritesFile(removeDuplicates.checked, duplicateOptionSelector.value);
 })
 
 

@@ -135,12 +135,12 @@ function createFavoritesData (removeDuplicates, duplicateOption) {
 }
 
 // Saves favorites data to file
-function exportFavoritesFile() {
+function exportFavoritesFile(removeDuplicates, duplicateOption) {
     // link to download file
     const link = document.createElement("a");
 
     // BLOB object with JSON data
-    const file = new Blob([createFavoritesData()], { type: 'text/plain' });
+    const file = new Blob([createFavoritesData(removeDuplicates, duplicateOption)], { type: 'text/plain' });
 
     // link leads to file
     link.href = URL.createObjectURL(file);
