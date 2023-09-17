@@ -2,7 +2,7 @@
 
 
 const CORSprefix = 'https://cors-anywhere2.onrender.com/'
-const maxRequestAttempts = 3
+const maxRequestAttempts = 20
 
 // keeps track of all favorites page data requested for each user
 // key is user ID and value is a map with key page number and value of page's html text
@@ -430,7 +430,7 @@ async function sendNext(offset, commands, advanced, abortSignal)
 				}
 				// Try again if request failed
 				console.error(error.message)
-				sleep(500)
+				sleep(1000)
 				return requestNext(attemptsLeft-1)
 			})
 		const output = await requestedDoc
