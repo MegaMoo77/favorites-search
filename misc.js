@@ -81,7 +81,7 @@ var addShowOriginal = (thumb, img, as) =>
 var removeImage = (thumb, id) =>
 {
 	// Confirm the removal
-	var answer = confirm("Remove this image?");
+	var answer = confirm("Remove this image? This image will also be removed from your favorites if you are logged in");
 	if (answer == true)
 	{
 		// Remove the image
