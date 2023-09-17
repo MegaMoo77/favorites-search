@@ -1,5 +1,5 @@
 
-<!-- saved from url=(0014)about:internet -->
+<!-- TODO! Explain importing/exporting and custom requests -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {
    color: black;
 }
@@ -9,6 +9,8 @@
 <li><a href="#search-documentation">Search Documentation</a></li>
 <li><a href="#images">Images</a></li>
 <li><a href="#failed-requests">Failed Requests</a></li>
+<li><a href="#import-export">Importing and Exporting Posts</a></li>
+<li><a href="#custom-requests">Custom Requests</a></li>
 <li><a href="#advanced-mode">Advanced Mode</a></li>
 <li><a href="#additional-info">Additional Info</a></li>
 </ul>
@@ -49,8 +51,8 @@
 <p>This command requests that AT LEAST ONE of the commands contained in the or command is true.</p>
 <p>Example: ( blu* ~ -big ~ -dog ~ kind ) log</p>
 <p>This command requests that an image contains log, and that it also contains a tag matching blu* (like blue or bluer), or doesn't contain a tag matching big (like big or bigger), or doesn't contain dog, or contains kind.</p>
-<p>Usage Notes
-Since '*' is used to specify commands, requesting images with tags that contain these special characters is unlikely to work.</p>
+<h4>Usage Notes</h4>
+<p>Since '*' is used to specify commands, requesting images with tags that contain these special characters is unlikely to work.</p>
 <p>Any input is lowercased since all tags on this site are lowercase. So, "RaDi0" will be interpreted as "radi0".</p>
 <h1 id="images">Images</h1>
 <p>Each image that is displayed will have these features</p>
@@ -62,6 +64,20 @@ Since '*' is used to specify commands, requesting images with tags that contain 
 <p>If advanced mode is active, there will also be a label underneath the image that displays data about the image, like its score</p>
 <h1 id="failed-requests">Failed Requests</h1>
 <p>When a request for a page or API data fails, it will show up in this box. You can hit the red retry button to retry the request. If it was successful, the button will turn green, and the failed request item will fade out. Otherwise, it will remain red</p>
+<h1 id="import-export">Importing and Exporting Posts</h1>
+<h2>Exporting Posts</h2>
+<p>You can export post data into files, and import them into the app later. If you use this app regularly, this can help you save time because you no longer need to wait for all the posts to load in.</p>
+<p>To export post data, you must first load in the posts you want to save. Only visible posts will be saved. Then, you can choose to remove any duplicate posts, which are posts with the same ID by clicking on the checkbox that says "Remove Duplicates".</p>
+<p>Next to this checkbox, you can choose to "Keep First", which means that the first post is kept and its duplicates are destroyed. Or, you can choose to "Keep Last", which destroys all duplicates except the last post. Finally, you can hit the export button and save the posts data to a file.</p>
+<h2>Importing Posts</h2>
+<p>To import a post, simply click the import button. Then, choose the file with your data.</p>
+<p>After you have chosen a file, you'll be asked whether you want to clear any posts being currently displayed to make room for the imported posts. By default, it will clear the display.</p>
+<p>After the post is imported, it'll show up in a list with an X button by it. If you click the X button, the file's data will be removed from the app, and any posts from that file will be removed from the display.</p>
+<h2>Filtering Imported Posts</h2>
+<p>You can enter tags in the provided input space, and hit the filter button to filter imported posts by their tags. Note that this filters ONLY imported posts</p>
+<h1 id="custom-requests">Custom Requests</h1>
+<p>Custom requests let you get posts from a specific page from a specific user. Simply enter the necessary information, then hit the "Request Page" button.</p>
+<p>You can also filter custom posts just like imported posts. However, the custom post filtering ONLY applies to custom posts.</p>
 <h1 id="advanced-mode">Advanced Mode</h1>
 <p>When the advanced mode checkbox is checked, advanced mode will be enabled. This means that when you hit the submit button, API data for each post will also be requested. </p>
 <p>Statistics like rating, score, upload date, etc will be available, which will allow you to use features in the advanced mode user interface.</p>

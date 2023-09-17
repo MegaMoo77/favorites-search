@@ -8,6 +8,8 @@
 		<script src="tag-logic.js" type="text/javascript" defer></script>
 		<script src="misc.js" type="text/javascript" defer></script>
 		<script src="loading.js" type="text/javascript" defer></script>
+		<script src="import-export.js" type="text/javascript" defer></script>
+		<script src="custom-requests.js" type="text/javascript" defer></script>
 		<script src="ui.js" type="text/javascript" defer></script>
 		<title>Rule34 Favorites Search</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin="true">
@@ -39,8 +41,49 @@
 				<div id="flexElementContainer">
 					<div class="subUIelement" id="failedRequestContainer">
 						<h3 style="text-align: center">Failed Requests</h3>
-						<nav id = "failedRequestNav">
-							<ul id="failedRequestList">
+						<nav class = "requestNav" id="failedRequestNav">
+							<ul class="requestList" id="failedRequestList">
+
+							</ul>
+						</nav>
+					</div>
+					<div class="subUIelement" id="customRequestContainer">
+						<h3 style="text-align: center">Custom Requests</h3>
+						<form autocomplete="on" action="javascript:void(0);">
+							<div>
+								<input type="text" id="customID" placeholder="User Id" autocomplete="on" size="15">
+								<input type="number" id="customPage" placeholder="Page" autocomplete="on" style="width:5em">
+								<button type="button" id="requestCustomPage">Request Page</button>
+							</div>
+							<div class="awesomplete" id="customQueryDiv"><input id="customQuery" placeholder="Enter tags to filter custom posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
+							<button type="button" id= "submitCustomQuery">Filter Custom Posts</button>
+						</form>
+						
+						<nav class = "requestNav">
+							<ul class="requestList" id="customRequestList">
+
+							</ul>
+						</nav>
+					</div>
+					<div class="subUIelement" id="fileManager">
+						<h3 style="text-align: center">Import/Export Favorites</h3>
+							<div>
+								<input type="checkbox" id="removeDuplicates">
+								<label for="removeDuplicates">Remove Duplicates</label>
+								<select id="removeDuplicatesOrder">
+									<option value="first" selected>Keep First</option>
+									<option value="last">Keep Last</option>
+								</select>
+								<button type="button" id="exportFavorites">Export</button>
+							</div>
+							<div>
+								<button type="button" id="importButton" onclick="document.getElementById('importFavorites').click()">Import</button>
+								<input type="file" id="importFavorites" multiple="multiple" style="display: none;" accept=".txt, .json"></input>
+								<div class="awesomplete" id="importQueryDiv"><input id="importQuery" placeholder="Enter tags to filter imported posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
+								<button type="button" id= "submitImportQuery">Filter</button>
+							</div>
+						<nav id = "importedFilesNav">
+							<ul id="importedFilesList">
 
 							</ul>
 						</nav>

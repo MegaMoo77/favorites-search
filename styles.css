@@ -3,7 +3,7 @@ body,div,h1,h2,h3,h4,h5,h6,p,ul,li,dd,dt{font-family:verdana,sans-serif;margin:0
 /* UndertowTruck */
 :root {
     --subUIelementBorderColor: #5dd75d;
-    --subUIelementMinHeight: 100px;
+    --subUIelementMinHeight: 12em;
     --imageMaxDim: 200px;
     --failedRequestButtonSize: 25px
 }
@@ -26,8 +26,8 @@ span.thumb > label {
     flex-wrap: wrap;
 }
 .subUIelement {
-    height: clamp(10rem, 10rem, 30rem);
     min-height: var(--subUIelementMinHeight);
+    height: 13em;
     border-color: var(--subUIelementBorderColor);
     border-style: solid;
     border-width: 2px;
@@ -43,14 +43,40 @@ span.thumb > label {
     flex-basis: 30em;
     padding-bottom: 0;
 }
-#failedRequestNav {
+.requestNav {
     overflow-y: auto; 
 }
 
-#failedRequestList {
+.requestList {
     list-style-type: none;
     margin: 1em
 }
+
+#customRequestContainer {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
+}
+
+/* File Import Export UI */
+#fileManager {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
+}
+#importQueryDiv {
+    margin-left: auto;
+    margin-right: auto;
+}
+#importedFilesNav {
+    overflow-y: auto; 
+}
+
+#importedFilesList {
+    list-style-type: none;
+    margin: 1em
+}
+
 
 #settings {
     height:fit-content
@@ -71,6 +97,13 @@ button.pending {
 }
 button.success {
     background-size: 20px;background-image: url('success.png');background-color: rgb(37, 174, 136)
+}
+
+/* Remove imported file button */
+button.remove {
+    width: var(--failedRequestButtonSize); 
+    height: var(--failedRequestButtonSize);
+    color: crimson;
 }
 
 /* UndertowTruck */
