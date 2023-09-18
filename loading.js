@@ -526,7 +526,6 @@ var displayData = (thumb, statistic) => {
 	}
 }
 
-// TODO! Finish this function
 /**
  * Extracts score and rating from a script tag next to its sibling thumb element in page from site and returns object like {rating:"e", score:12}
  * @param {HTMLScriptElement} scriptTag 
@@ -544,33 +543,6 @@ function extractScoreAndRatingFromScriptTag(scriptTag) {
 	const score = dataObject.score;
 	const data = {rating:rating, score:score};
 	return data;
-}
-
-// TODO! Might be able to use nextSiblingElement function to get script tags after thumb elements
-// TODO! Remove this function if no longer needed
-/**
- * Extracts score and rating data from script tags next to thumb elements in pages from site
- * @param {Document} doc 
- * @returns {Object[]}
- */
-function extractPagePostMetadata(doc) {
-	let outputDataArray = [];
-	const scriptTags = Array.from(doc.getElementsByTagName("script"));
-	// 7th script tag will always contain data for first post (unless no posts on page)
-	const startIndex = 7;
-	for (let i = startIndex; i < scriptTags.length; i++) {
-		console.log(i);
-		const scriptTag = scriptTags[i];
-		const scriptTagText = scriptTag.innerText;
-		// make sure this script tag contains an indexing of array "posts" to ensure it has data needed
-		if (!scriptTagText.includes("posts[")) {
-			console.log(scriptTagText);
-			continue;
-		}
-		const data = extractScoreAndRatingFromScriptTag(scriptTag);
-		outputDataArray.push(data);
-	}
-	return outputDataArray;
 }
 
 function extractPagePostData(doc) {
