@@ -469,50 +469,47 @@ function reflect(promise){
 var displayData = (thumb, statistic) => {
 	const dataLabel = document.createElement('label')
 	const currentLabel = thumb.getElementsByTagName('label')[0]
-
-	if (thumb.metadata == undefined) {
-		dataLabel.textContent = `API data unavailable`
-	} else{
-		if (statistic == "none") {
-			// hide current label and break
-			if (currentLabel != 'none') {
-				currentLabel.textContent = '';
-				currentLabel.style.display = 'none';
-				thumb.getElementsByTagName("br")[0].style.display = 'none';
-				return;
-			}
+	if (statistic == "none") {
+		// hide current label and break
+		if (currentLabel != 'none') {
+			currentLabel.textContent = '';
+			currentLabel.style.display = 'none';
+			thumb.getElementsByTagName("br")[0].style.display = 'none';
+			return;
 		}
-		let labelText = ''
-		const metadata = thumb.metadata
-		switch (statistic) {
-			case 'score':
-				labelText = `Score: ${metadata.score}`
-				break
-			case 'id':
-				labelText = `Post ID: ${metadata.id}`
-				break
-			case 'rating':
-				labelText = `Rating: ${metadata.rating}`
-				break
-			case 'height':
-				labelText = `Height: ${metadata.height}`
-				break
-			case 'width':
-				labelText = `Width: ${metadata.width}`
-				break
-			case 'date':
-				// convert UNIX seconds time to date
-				labelText = `Date: ${metadata.date}`
-				break
-			case 'lastUpdate':
-				labelText = `Last Updated: ${new Date(metadata.lastUpdate * 1000)}`
-				break
-			case 'deleted':
-				labelText = `Deleted: ${metadata.deleted}`
-				break
-		}
-		dataLabel.textContent = labelText
 	}
+	let labelText = ''
+	const metadata = thumb.metadata
+	switch (statistic) {
+		case 'score':
+			labelText = `Score: ${metadata.score}`
+			break
+		case 'id':
+			labelText = `Post ID: ${metadata.id}`
+			break
+		case 'rating':
+			labelText = `Rating: ${metadata.rating}`
+			break
+		case 'height':
+			labelText = `Height: ${metadata.height}`
+			break
+		case 'width':
+			labelText = `Width: ${metadata.width}`
+			break
+		case 'date':
+			// convert UNIX seconds time to date
+			labelText = `Date: ${metadata.date}`
+			break
+		case 'lastUpdate':
+			labelText = `Last Updated: ${new Date(metadata.lastUpdate * 1000)}`
+			break
+		case 'deleted':
+			labelText = `Deleted: ${metadata.deleted}`
+			break
+	}
+	dataLabel.textContent = labelText
+
+
 	//label don't exist
 	if (currentLabel == null) {
 		// display info
@@ -526,6 +523,7 @@ var displayData = (thumb, statistic) => {
 	}
 }
 
+// TODO! Also extract post ID
 /**
  * Extracts score and rating from a script tag next to its sibling thumb element in page from site and returns object like {rating:"e", score:12}
  * @param {HTMLScriptElement} scriptTag 
@@ -577,7 +575,9 @@ async function loadContent(doc, commands, advanced, abortSignal)
 			const imageID = getIDfromThumb(thumb)
 			const imageInfo = await getImageInfo(imageID, abortSignal)
 			if (imageInfo == null) {
-				throw new Error(`Could not get API data for image ${imageID}`)
+				console.error(`Could not get API data for image ${imageID}`);
+				// return so we don't overwrite rating/score data with null metadata
+				return
 			}
 			thumb.metadata = imageInfo
 		})
