@@ -569,6 +569,13 @@ async function loadContent(doc, commands, advanced, abortSignal)
 	let newThumbs = getThumbs(doc, commands)
 	newThumbs = Array.from(newThumbs)
 
+	// get just score/rating data if not in advanced mode from neighboring script elements
+	for (const newThumb of newThumbs) {
+		const scriptTag = newThumb.nextElementSibling;
+		const metadata = extractScoreAndRatingFromScriptTag(scriptTag);
+		newThumb.metadata = metadata;
+	}
+	
 	// get API data if in advanced mode
 	if (advanced) {
 		const promises = newThumbs.map( async (thumb) => {
@@ -588,15 +595,6 @@ async function loadContent(doc, commands, advanced, abortSignal)
 				console.error(result.e.message)
 			}
 		});
-	}
-	// get just score/rating data if not in advanced mode from neighboring script elements
-	else {
-		for (const newThumb of newThumbs) {
-			const scriptTag = newThumb.nextElementSibling;
-			const metadata = extractScoreAndRatingFromScriptTag(scriptTag);
-			newThumb.metadata = metadata;
-		}
-		
 	}
 	
 	// Add new thumbs to document
