@@ -65,29 +65,6 @@
 							</ul>
 						</nav>
 					</div>
-					<div class="subUIelement" id="fileManager">
-						<h3 style="text-align: center">Import/Export Favorites</h3>
-							<div>
-								<input type="checkbox" id="removeDuplicates">
-								<label for="removeDuplicates">Remove Duplicates</label>
-								<select id="removeDuplicatesOrder">
-									<option value="first" selected>Keep First</option>
-									<option value="last">Keep Last</option>
-								</select>
-								<button type="button" id="exportFavorites">Export</button>
-							</div>
-							<div>
-								<button type="button" id="importButton" onclick="document.getElementById('importFavorites').click()">Import</button>
-								<input type="file" id="importFavorites" multiple="multiple" style="display: none;" accept=".txt, .json"></input>
-								<div class="awesomplete" id="importQueryDiv"><input id="importQuery" placeholder="Enter tags to filter imported posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
-								<button type="button" id= "submitImportQuery">Filter</button>
-							</div>
-						<nav id = "importedFilesNav">
-							<ul id="importedFilesList">
-
-							</ul>
-						</nav>
-					</div>
 					<fieldset id="settings" class="subUIelement">
 						<h3 style="text-align: center">Advanced Mode</h3>
 						<br>
@@ -133,6 +110,29 @@
 						</div>
 						<br>
 					</fieldset>
+					<div class="subUIelement" id="fileManager">
+						<h3 style="text-align: center">Import/Export Favorites</h3>
+							<div>
+								<input type="checkbox" id="removeDuplicates">
+								<label for="removeDuplicates">Remove Duplicates</label>
+								<select id="removeDuplicatesOrder">
+									<option value="first" selected>Keep First</option>
+									<option value="last">Keep Last</option>
+								</select>
+								<button type="button" id="exportFavorites">Export</button>
+							</div>
+							<div>
+								<button type="button" id="importButton" onclick="document.getElementById('importFavorites').click()">Import</button>
+								<input type="file" id="importFavorites" multiple="multiple" style="display: none;" accept=".txt, .json"></input>
+								<div class="awesomplete" id="importQueryDiv"><input id="importQuery" placeholder="Enter tags to filter imported posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
+								<button type="button" id= "submitImportQuery">Filter</button>
+							</div>
+						<nav id = "importedFilesNav">
+							<ul id="importedFilesList">
+
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
 			<div title="Higher number = faster search; more computer resources" style="display: none;">Max threads:
