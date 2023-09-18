@@ -630,7 +630,6 @@ async function loadContent(doc, commands, advanced, abortSignal)
 		// Ensure the link opens in a new tab
 		as[0].target = "_blank";
 
-		// TODO! Uncomment this line
 		displayData(thumb, statDisplayed.value)
 
 		// Add the link to show the original image
