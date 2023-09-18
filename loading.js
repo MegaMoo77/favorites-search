@@ -574,6 +574,8 @@ async function loadContent(doc, commands, advanced, abortSignal)
 	for (const newThumb of newThumbs) {
 		const scriptTag = newThumb.nextElementSibling;
 		const metadata = extractScoreAndRatingFromScriptTag(scriptTag);
+		const postID = getIDfromThumb(newThumb);
+		metadata.id = postID;
 		newThumb.metadata = metadata;
 	}
 
