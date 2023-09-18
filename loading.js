@@ -520,6 +520,9 @@ var displayData = (thumb, statistic) => {
 		thumb.appendChild(document.createElement('br'))
 	} else {
 		currentLabel.replaceWith(dataLabel)
+		// make sure to unhide break
+		thumb.getElementsByTagName("br")[0].style.display = '';
+
 	}
 }
 
