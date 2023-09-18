@@ -70,7 +70,6 @@ async function afterCustomPageReceived(doc, userID, pageNum, button, listItem, l
     }
 }
 
-// TODO! Get pages from cache if available
 // handles custom page requests (based on failedPageRequestHandler)
 async function customPageRequestHandler(userID, pageNum) {
 	const list = document.getElementById('customRequestList')
