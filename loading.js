@@ -523,23 +523,29 @@ var displayData = (thumb, statistic) => {
 	}
 }
 
-// TODO! Also extract post ID
 /**
- * Extracts score and rating from a script tag next to its sibling thumb element in page from site and returns object like {rating:"e", score:12}
+ * Extracts score, rating, and ID from a script tag next to its sibling thumb element in page from site and returns object like {rating:"e", score:12}
  * @param {HTMLScriptElement} scriptTag 
  */
-function extractScoreAndRatingFromScriptTag(scriptTag) {
-	const scriptTagText = scriptTag.innerText;
+function extractScoreAndRatingAndIDFromScriptTag(scriptTag) {
+	// exclude beginning comment from script tag
+	const scriptTagText = scriptTag.innerText.substring(15);
+
 	const openingBraceLocation = scriptTagText.indexOf("{");
 	const closingBraceLocation = scriptTagText.indexOf("}");
+	// Use these indices to extract post ID from 'posts[4378943]'
+	const openingArrayIndex = scriptTagText.indexOf("[");
+	const closingArrayIndex = scriptTagText.indexOf("]");
 	// Extract relevant portion and remove unneccesary code
 	const relevantDataText = scriptTagText.substring(openingBraceLocation, closingBraceLocation + 1).replace(".split(/ /g)","");
+	// Also extract post ID
+	const postID = parseInt(scriptTagText.substring(openingArrayIndex + 1, closingArrayIndex))
 	// now, replace all single quotes with double quotes to prepare for JSON parsing
 	const JSONText = `${relevantDataText.replaceAll(`'`,`"`)}`;
 	const dataObject = JSON.parse(JSONText);
 	const rating = dataObject.rating.toLowerCase()[0];
 	const score = dataObject.score;
-	const data = {rating:rating, score:score};
+	const data = {rating:rating, score:score,id:postID};
 	return data;
 }
 
@@ -575,7 +581,7 @@ async function loadContent(doc, commands, advanced, abortSignal)
 		const metadata = extractScoreAndRatingFromScriptTag(scriptTag);
 		newThumb.metadata = metadata;
 	}
-	
+
 	// get API data if in advanced mode
 	if (advanced) {
 		const promises = newThumbs.map( async (thumb) => {
