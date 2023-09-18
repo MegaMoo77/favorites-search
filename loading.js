@@ -474,10 +474,12 @@ var displayData = (thumb, statistic) => {
 		dataLabel.textContent = `API data unavailable`
 	} else{
 		if (statistic == "none") {
-			// remove current label's text if it exists
+			// hide current label and break
 			if (currentLabel != 'none') {
-				currentLabel.textContent = ''
-				return
+				currentLabel.textContent = '';
+				currentLabel.style.display = 'none';
+				thumb.getElementsByTagName("br")[0].style.display = 'none';
+				return;
 			}
 		}
 		let labelText = ''
@@ -612,9 +614,18 @@ async function loadContent(doc, commands, advanced, abortSignal)
 			}
 		});
 	}
+	// get just score/rating data if not in advanced mode from neighboring script elements
+	else {
+		for (const newThumb of newThumbs) {
+			const scriptTag = newThumb.nextElementSibling;
+			const metadata = extractScoreAndRatingFromScriptTag(scriptTag);
+			newThumb.metadata = metadata;
+		}
+		
+	}
 	
 	// Add new thumbs to document
-	for (var i = 0; i < newThumbs.length; i++)
+	for (let i = 0; i < newThumbs.length; i++)
 	{
 		var thumb = newThumbs[i];
 		thumb.id = getIDfromThumb(thumb)
@@ -644,10 +655,8 @@ async function loadContent(doc, commands, advanced, abortSignal)
 		// Ensure the link opens in a new tab
 		as[0].target = "_blank";
 
-		// display stats if advanced mode enabled
-		if (advanced) {
-			displayData(thumb, statDisplayed.value)
-		}
+		// TODO! Uncomment this line
+		displayData(thumb, statDisplayed.value)
 
 		// Add the link to show the original image
 		addShowOriginal(thumb, img, as)
