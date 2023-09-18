@@ -578,7 +578,7 @@ async function loadContent(doc, commands, advanced, abortSignal)
 	// get just score/rating data if not in advanced mode from neighboring script elements
 	for (const newThumb of newThumbs) {
 		const scriptTag = newThumb.nextElementSibling;
-		const metadata = extractScoreAndRatingFromScriptTag(scriptTag);
+		const metadata = extractScoreAndRatingAndIDFromScriptTag(scriptTag);
 		newThumb.metadata = metadata;
 	}
 
