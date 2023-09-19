@@ -1,4 +1,3 @@
-<!--TODO! Update tutorial to explain why score/rating can be seen without advanced mode-->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {
    color: black;
 }
@@ -78,11 +77,11 @@
 <p>Custom requests let you get posts from a specific page from a specific user. Simply enter the necessary information, then hit the "Request Page" button.</p>
 <p>You can also filter custom posts just like imported posts. However, the custom post filtering ONLY applies to custom posts.</p>
 <h1 id="advanced-mode">Advanced Mode</h1>
-<p>When the advanced mode checkbox is checked, advanced mode will be enabled. This means that when you hit the submit button, API data for each post will also be requested. </p>
-<p>Statistics like rating, score, upload date, etc will be available, which will allow you to use features in the advanced mode user interface.</p>
-<p>The checkboxes titled "Explicit", "Questionable", and "Safe" determine what posts can be displayed based on the rating. Note that these checkboxes don't automatically filter out requested images, so you may have to check and uncheck the box after all images are loaded.</p>
-<p>The dropdown by the text that says "Sort By" allows you to sort images by score, post ID, height, width, or last update date. Additionally, the checkbox next to it allows you to select whether you want to sort in ascending or descending order.</p>
-<p>Finally, there is a dropdown that allows you to select what statistic to display. The statistic, such as score or post ID, will be displayed beneath the image in black text.</p>
+<p>Usually, the only extra data that posts contain are the post ID, the score, and the rating. However, when the advanced mode checkbox is checked, advanced mode will be enabled.</p>
+<p>This means that when you hit the submit button, API data for each post will also be requested. The API data includes the image width, height, upload date, last update date, and deletion status.</p>
+<p>The checkboxes titled "Explicit", "Questionable", and "Safe" determine what posts can be displayed based on the rating. You can uncheck a box to exclude posts with that rating. Then, hit the filter button to apply your preferences.</p>
+<p>The dropdown by the text that says "Sort By" allows you to sort images by score, post ID, height, width, or last update date. Additionally, the checkbox next to it allows you to select whether you want to sort in ascending or descending order. Then, you can hit the sort button to apply the sort.</p>
+<p>Finally, there is a dropdown that allows you to select what statistic to display. The statistic, such as score or post ID, will be displayed beneath the image in black text. If you don't use advanced mode to request all the data for a post, then not all statistics will be available to display.</p>
 <h1 id="additional-info">Additional Info</h1>
 <p>API requests usually fail if the post was uploaded to Rule34 recently. The post's data likely hasn't been put into the API Database yet. </p><p></p>
 <p>
