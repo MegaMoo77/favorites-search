@@ -469,48 +469,47 @@ function reflect(promise){
 var displayData = (thumb, statistic) => {
 	const dataLabel = document.createElement('label')
 	const currentLabel = thumb.getElementsByTagName('label')[0]
-
-	if (thumb.metadata == undefined) {
-		dataLabel.textContent = `API data unavailable`
-	} else{
-		if (statistic == "none") {
-			// remove current label's text if it exists
-			if (currentLabel != 'none') {
-				currentLabel.textContent = ''
-				return
-			}
+	if (statistic == "none") {
+		// hide current label and break
+		if (currentLabel != 'none') {
+			currentLabel.textContent = '';
+			currentLabel.style.display = 'none';
+			thumb.getElementsByTagName("br")[0].style.display = 'none';
+			return;
 		}
-		let labelText = ''
-		const metadata = thumb.metadata
-		switch (statistic) {
-			case 'score':
-				labelText = `Score: ${metadata.score}`
-				break
-			case 'id':
-				labelText = `Post ID: ${metadata.id}`
-				break
-			case 'rating':
-				labelText = `Rating: ${metadata.rating}`
-				break
-			case 'height':
-				labelText = `Height: ${metadata.height}`
-				break
-			case 'width':
-				labelText = `Width: ${metadata.width}`
-				break
-			case 'date':
-				// convert UNIX seconds time to date
-				labelText = `Date: ${metadata.date}`
-				break
-			case 'lastUpdate':
-				labelText = `Last Updated: ${new Date(metadata.lastUpdate * 1000)}`
-				break
-			case 'deleted':
-				labelText = `Deleted: ${metadata.deleted}`
-				break
-		}
-		dataLabel.textContent = labelText
 	}
+	let labelText = ''
+	const metadata = thumb.metadata
+	switch (statistic) {
+		case 'score':
+			labelText = `Score: ${metadata.score}`
+			break
+		case 'id':
+			labelText = `Post ID: ${metadata.id}`
+			break
+		case 'rating':
+			labelText = `Rating: ${metadata.rating}`
+			break
+		case 'height':
+			labelText = `Height: ${metadata.height}`
+			break
+		case 'width':
+			labelText = `Width: ${metadata.width}`
+			break
+		case 'date':
+			// convert UNIX seconds time to date
+			labelText = `Date: ${metadata.date}`
+			break
+		case 'lastUpdate':
+			labelText = `Last Updated: ${new Date(metadata.lastUpdate * 1000)}`
+			break
+		case 'deleted':
+			labelText = `Deleted: ${metadata.deleted}`
+			break
+	}
+	dataLabel.textContent = labelText
+
+
 	//label don't exist
 	if (currentLabel == null) {
 		// display info
@@ -518,7 +517,31 @@ var displayData = (thumb, statistic) => {
 		thumb.appendChild(document.createElement('br'))
 	} else {
 		currentLabel.replaceWith(dataLabel)
+		// make sure to unhide break
+		thumb.getElementsByTagName("br")[0].style.display = '';
+
 	}
+}
+
+/**
+ * Extracts score, rating, and ID from a script tag next to its sibling thumb element in page from site and returns object like {rating:"e", score:12}
+ * @param {HTMLScriptElement} scriptTag 
+ */
+function extractScoreAndRatingFromScriptTag(scriptTag) {
+	// exclude beginning comment from script tag
+	const scriptTagText = scriptTag.innerText.substring(15);
+
+	const openingBraceLocation = scriptTagText.indexOf("{");
+	const closingBraceLocation = scriptTagText.indexOf("}");
+	// Extract relevant portion and remove unneccesary code
+	const relevantDataText = scriptTagText.substring(openingBraceLocation, closingBraceLocation + 1).replace(".split(/ /g)","");
+	// now, replace all single quotes with double quotes to prepare for JSON parsing
+	const JSONText = `${relevantDataText.replaceAll(`'`,`"`)}`;
+	const dataObject = JSON.parse(JSONText);
+	const rating = dataObject.rating.toLowerCase()[0];
+	const score = dataObject.score;
+	const data = {rating:rating, score:score};
+	return data;
 }
 
 function extractPagePostData(doc) {
@@ -547,13 +570,24 @@ async function loadContent(doc, commands, advanced, abortSignal)
 	let newThumbs = getThumbs(doc, commands)
 	newThumbs = Array.from(newThumbs)
 
+	// get just score/rating data if not in advanced mode from neighboring script elements
+	for (const newThumb of newThumbs) {
+		const scriptTag = newThumb.nextElementSibling;
+		const metadata = extractScoreAndRatingFromScriptTag(scriptTag);
+		const postID = getIDfromThumb(newThumb);
+		metadata.id = postID;
+		newThumb.metadata = metadata;
+	}
+
 	// get API data if in advanced mode
 	if (advanced) {
 		const promises = newThumbs.map( async (thumb) => {
 			const imageID = getIDfromThumb(thumb)
 			const imageInfo = await getImageInfo(imageID, abortSignal)
 			if (imageInfo == null) {
-				throw new Error(`Could not get API data for image ${imageID}`)
+				console.error(`Could not get API data for image ${imageID}`);
+				// return so we don't overwrite rating/score data with null metadata
+				return
 			}
 			thumb.metadata = imageInfo
 		})
@@ -567,7 +601,7 @@ async function loadContent(doc, commands, advanced, abortSignal)
 	}
 	
 	// Add new thumbs to document
-	for (var i = 0; i < newThumbs.length; i++)
+	for (let i = 0; i < newThumbs.length; i++)
 	{
 		var thumb = newThumbs[i];
 		thumb.id = getIDfromThumb(thumb)
@@ -597,10 +631,7 @@ async function loadContent(doc, commands, advanced, abortSignal)
 		// Ensure the link opens in a new tab
 		as[0].target = "_blank";
 
-		// display stats if advanced mode enabled
-		if (advanced) {
-			displayData(thumb, statDisplayed.value)
-		}
+		displayData(thumb, statDisplayed.value)
 
 		// Add the link to show the original image
 		addShowOriginal(thumb, img, as)

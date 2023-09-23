@@ -24,7 +24,7 @@
 				<a href="tutorial.html" target="_blank">About</a>
 			</form>
 			<input type="checkbox" id="advancedMode">
-			<label for="advancedMode" style="white-space:pre-wrap;">Advanced Mode (loads API data for images, allowing you to sort and filter them)</label>
+			<label for="advancedMode" style="white-space:pre-wrap;">Advanced Mode (loads additional data for posts like width, height, upload date, etc.)</label>
 			<br>
 			<input type="checkbox" id="expandUI">
 			<label for="expandUI">Expand UI</label>
@@ -47,48 +47,7 @@
 							</ul>
 						</nav>
 					</div>
-					<div class="subUIelement" id="customRequestContainer">
-						<h3 style="text-align: center">Custom Requests</h3>
-						<form autocomplete="on" action="javascript:void(0);">
-							<div>
-								<input type="text" id="customID" placeholder="User Id" autocomplete="on" size="15">
-								<input type="number" id="customPage" placeholder="Page" autocomplete="on" style="width:5em">
-								<button type="button" id="requestCustomPage">Request Page</button>
-							</div>
-							<div class="awesomplete" id="customQueryDiv"><input id="customQuery" placeholder="Enter tags to filter custom posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
-							<button type="button" id= "submitCustomQuery">Filter Custom Posts</button>
-						</form>
-						
-						<nav class = "requestNav">
-							<ul class="requestList" id="customRequestList">
-
-							</ul>
-						</nav>
-					</div>
-					<div class="subUIelement" id="fileManager">
-						<h3 style="text-align: center">Import/Export Favorites</h3>
-							<div>
-								<input type="checkbox" id="removeDuplicates">
-								<label for="removeDuplicates">Remove Duplicates</label>
-								<select id="removeDuplicatesOrder">
-									<option value="first" selected>Keep First</option>
-									<option value="last">Keep Last</option>
-								</select>
-								<button type="button" id="exportFavorites">Export</button>
-							</div>
-							<div>
-								<button type="button" id="importButton" onclick="document.getElementById('importFavorites').click()">Import</button>
-								<input type="file" id="importFavorites" multiple="multiple" style="display: none;" accept=".txt, .json"></input>
-								<div class="awesomplete" id="importQueryDiv"><input id="importQuery" placeholder="Enter tags to filter imported posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
-								<button type="button" id= "submitImportQuery">Filter</button>
-							</div>
-						<nav id = "importedFilesNav">
-							<ul id="importedFilesList">
-
-							</ul>
-						</nav>
-					</div>
-					<fieldset id="settings" class="subUIelement" style="display: none;">
+					<fieldset id="settings" class="subUIelement">
 						<h3 style="text-align: center">Advanced Mode</h3>
 						<br>
 						<div>
@@ -133,6 +92,47 @@
 						</div>
 						<br>
 					</fieldset>
+					<div class="subUIelement" id="customRequestContainer">
+						<h3 style="text-align: center">Custom Requests</h3>
+						<form autocomplete="on" action="javascript:void(0);">
+							<div>
+								<input type="text" id="customID" placeholder="User Id" autocomplete="on" size="15">
+								<input type="number" id="customPage" placeholder="Page" autocomplete="on" style="width:5em">
+								<button type="button" id="requestCustomPage">Request Page</button>
+							</div>
+							<div class="awesomplete" id="customQueryDiv"><input id="customQuery" placeholder="Enter tags to filter custom posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
+							<button type="button" id= "submitCustomQuery">Filter Custom Posts</button>
+						</form>
+						
+						<nav class = "requestNav">
+							<ul class="requestList" id="customRequestList">
+
+							</ul>
+						</nav>
+					</div>
+					<div class="subUIelement" id="fileManager">
+						<h3 style="text-align: center">Import/Export Favorites</h3>
+							<div>
+								<input type="checkbox" id="removeDuplicates">
+								<label for="removeDuplicates">Remove Duplicates</label>
+								<select id="removeDuplicatesOrder">
+									<option value="first" selected>Keep First</option>
+									<option value="last">Keep Last</option>
+								</select>
+								<button type="button" id="exportFavorites">Export</button>
+							</div>
+							<div>
+								<button type="button" id="importButton" onclick="document.getElementById('importFavorites').click()">Import</button>
+								<input type="file" id="importFavorites" multiple="multiple" style="display: none;" accept=".txt, .json"></input>
+								<div class="awesomplete" id="importQueryDiv"><input id="importQuery" placeholder="Enter tags to filter imported posts" name="tags" size="23" type="text" value="" autocomplete="off" aria-autocomplete="list"><ul hidden=""></ul><span class="visually-hidden" role="status" aria-live="assertive" aria-relevant="additions"></span></div>
+								<button type="button" id= "submitImportQuery">Filter</button>
+							</div>
+						<nav id = "importedFilesNav">
+							<ul id="importedFilesList">
+
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
 			<div title="Higher number = faster search; more computer resources" style="display: none;">Max threads:

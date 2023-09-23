@@ -91,15 +91,6 @@ expandUI.addEventListener('change', evt => {
 	}
 })
 
-advancedMode.addEventListener('change', evt => {
-	if (advancedMode.checked) {
-		//back to normal
-		settings.style = ''
-	} else {
-		settings.style.display = 'none'
-	}
-})
-
 // by UndertowTruck
 // changes stat displayed based on dropdown change
 statDisplayed.addEventListener('change', evt => {
