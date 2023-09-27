@@ -536,7 +536,8 @@ function extractScoreAndRatingFromScriptTag(scriptTag) {
 	// Extract relevant portion and remove unneccesary code
 	const relevantDataText = scriptTagText.substring(openingBraceLocation, closingBraceLocation + 1).replace(".split(/ /g)","");
 	// now, replace all single quotes with double quotes to prepare for JSON parsing
-	const JSONText = `${relevantDataText.replaceAll(`'`,`"`)}`;
+	var JSONText = `${relevantDataText.replaceAll(`'`,`"`)}`;
+	JSONText = JSONText.replace(/(\r\n|\n|\r)/gm, "");
 	const dataObject = JSON.parse(JSONText);
 	const rating = dataObject.rating.toLowerCase()[0];
 	const score = dataObject.score;
