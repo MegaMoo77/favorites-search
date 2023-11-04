@@ -50,7 +50,7 @@ var addShowOriginal = (thumb, img, as) =>
 	let href = ''
 	const id = thumb.id
 	// if API data successfully loaded, get original image link from there
-	if (thumb.metadata != undefined) {
+	if (thumb?.metadata?.originalImageURL != undefined) {
 		href = thumb.metadata.originalImageURL
 	} else {
 		href = "showOriginalRedirect.html?id=" + id;
