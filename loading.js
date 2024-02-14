@@ -1,8 +1,8 @@
 // Takes care of loading images
 
 
-const CORSprefix = 'https://cors-anywhere2.onrender.com/'
-const maxRequestAttempts = 20
+const CORSprefix = 'https://cors-anywhere3.onrender.com/'
+const maxRequestAttempts = 10
 
 // keeps track of all favorites page data requested for each user
 // key is user ID and value is a map with key page number and value of page's html text
