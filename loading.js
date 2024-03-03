@@ -1,7 +1,7 @@
 // Takes care of loading images
 
 
-const CORSprefix = 'https://cors-anywhere3.onrender.com/'
+const CORSprefix = 'http://localhost:8080/'
 const maxRequestAttempts = 10
 
 // keeps track of all favorites page data requested for each user
